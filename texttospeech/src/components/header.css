@@ -1,0 +1,19 @@
+.line {
+    cursor: pointer;
+    position: relative;
+}
+
+.line::after {
+    content: '';
+    width: 0;
+    height: 2px;
+    background: linear-gradient(to right, rgb(104, 103, 103), #c8c4c4,white);
+    position: absolute;
+    left: 0px;
+    top: 30px;
+    transition: 0.4s;
+}
+
+.line:hover::after {
+    width: 100%;
+}
