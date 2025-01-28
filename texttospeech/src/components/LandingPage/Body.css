@@ -1,0 +1,38 @@
+.button {
+    margin-top: 30px;
+    padding: 10px 38px;
+    font-size: 25px;
+    cursor: pointer;
+    border-radius: 15px;
+    background-color: #d1cccc;
+    font-weight: 300;
+    z-index: 1;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid #d1cccc;
+    box-shadow: 0 0 10px #dfdcdc;
+}
+
+.button::before {
+    position: absolute;
+    background-color: rgb(54, 53, 53);
+    color: #d1cccc;
+    bottom: -100%;
+    content: '';
+    height: 100%;
+    width: 100%;
+    transition: bottom 0.2s ease-out;
+    left: 0;
+    z-index: 0;
+}
+
+.button:hover::before {
+    bottom: 0;
+    z-index: -999;
+
+}
+
+.button:hover {
+    color: #d1cccc;
+    transform: scale(1.1);
+}

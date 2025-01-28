@@ -1,0 +1,411 @@
+import React, { useRef, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBolt, faGraduationCap, faHeadphones, faLightbulb, faTableColumns, faUser } from '@fortawesome/free-solid-svg-icons';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { windowlistner } from "./WindowListener";
+import './Body.css'
+
+gsap.registerPlugin(ScrollTrigger);
+
+function Body() {
+    const [position, setposition] = useState({ x: 0, y: 0 });
+
+    windowlistner('pointermove', (e) => {
+        setposition({ x: e.clientX, y: e.clientY })
+    })
+
+    useGSAP(() => {
+        gsap.from(".summary", {
+            x: -100,
+            opacity: 0,
+            delay: 1,
+            duration: 1,
+            scrollTrigger: ".summary"
+        })
+    })
+
+    useGSAP(() => {
+        let tl = gsap.from(".summarys", {
+            x: -100,
+            opacity: 0,
+            delay: 1,
+            duration: 1,
+            scrollTrigger: ".summarys"
+        })
+    })
+
+    useGSAP(() => {
+        let tl = gsap.from(".summaryss", {
+            x: -100,
+            opacity: 0,
+            delay: 1,
+            duration: 1,
+            scrollTrigger: ".summaryss"
+        })
+    })
+
+    useGSAP(() => {
+        gsap.from(".text", {
+            y: 100,
+            opacity: 0,
+            delay: 0.5,
+            duration: 0.75,
+        })
+    })
+
+    useGSAP(() => {
+        gsap.from(".efforts", {
+            y: 100,
+            opacity: 0,
+            delay: 0.75,
+            duration: 1,
+        })
+    })
+
+    useGSAP(() => {
+        gsap.from(".quote", {
+            y: 100,
+            opacity: 0,
+            delay: 1,
+            duration: 1.25,
+        })
+    })
+
+    useGSAP(() => {
+        gsap.from(".button", {
+            y: 100,
+            opacity: 0,
+            delay: 1.25,
+            duration: 1.75,
+        })
+    })
+
+    useGSAP(() => {
+        let tl = gsap.from(".privacy", {
+            y: 100,
+            opacity: 0,
+            delay: 0.75,
+            duration: 0.75,
+            scrollTrigger: ".privacy"
+        })
+    })
+
+    useGSAP(() => {
+        let tl = gsap.from(".power", {
+            x: -100,
+            opacity: 0,
+            delay: 1,
+            duration: 1,
+            scrollTrigger: ".power"
+        })
+    })
+
+    useGSAP(() => {
+        let tl = gsap.from(".streamline", {
+            y: 200,
+            opacity: 0,
+            delay: 1.5,
+            duration: 1,
+            scrollTrigger: ".streamline"
+        })
+    })
+
+    useGSAP(() => {
+        let tl = gsap.from(".innovation", {
+            x: 100,
+            opacity: 0,
+            delay: 2,
+            duration: 1,
+            scrollTrigger: ".innovation"
+        })
+    })
+    return (
+        <div style={styles.maindiv}>
+            <div className="cursor" style={{
+                ...styles.cursor,
+                transform: `translate(${position.x}px, ${position.y}px)`
+            }}></div>
+            <div style={styles.bodyContainer}>
+                <div style={styles.title} className="Title">
+                    <p className="text">Text That Speaks,</p>
+                    <h1 style={styles.color} className="efforts">Effortlessly!</h1>
+                </div>
+                <div style={styles.p} className="quote">
+                    <p>The ultimate tool to bring your words to life,</p>
+                    <p>powered by innovation.</p>
+                </div>
+                <button style={styles.button} className="button">Try VoxiFY</button>
+            </div>
+            <section style={styles.section}>
+                <div >
+                    <p style={styles.heading}>Your Ultimate Personalized AI Companion</p>
+                    <div style={styles.upload}  >
+                        <div style={styles.summary} className="summary">
+                            <FontAwesomeIcon icon={faUser} style={styles.icon} />
+                            <p style={styles.summaryTitle}>Upload Your Sources</p>
+                            <div className='my-5'>
+                                <p style={styles.summaryText}>
+                                    Upload your sources, including PDFs, websites,
+                                </p>
+                                <p style={styles.summaryText}>
+                                    Google Docs, or Google Slides. Our AI-powered
+                                </p>
+                                <p style={styles.summaryText}>
+                                    system will intelligently summarize the content,
+                                </p>
+                                <p style={styles.summaryText}>
+                                    helping you understand and explore your materials
+                                </p>
+                                <p style={styles.summaryText}>
+                                    with ease.
+                                </p>
+                            </div>
+                        </div>
+                        <div style={styles.imageContainer}>
+                            <img src="" alt="your sources" style={styles.image} />
+                        </div>
+                    </div>
+                </div>
+
+                <div >
+                    <div style={styles.upload}>
+                        <div style={styles.summary} className="summarys" >
+                            <FontAwesomeIcon icon={faBolt} style={styles.icon} />
+                            <p style={styles.summaryTitle}>Effortless Understanding</p>
+                            <div className='my-5'>
+                                <p style={styles.summaryText}>
+                                    With your content uploaded, Voicefy provides
+                                </p>
+                                <p style={styles.summaryText}>
+                                    personalized answers and generates ideas tailored
+                                </p>
+                                <p style={styles.summaryText}>
+                                    to the information that matters most to you.
+                                </p>
+                            </div>
+                        </div>
+                        <div style={styles.imageContainer}>
+                            <img src="" alt="your sources" style={styles.image} />
+                        </div>
+                    </div>
+                </div>
+                <div >
+                    <div style={styles.upload}>
+                        <div style={styles.summary} className="summaryss" >
+                            <FontAwesomeIcon icon={faHeadphones} style={styles.icon} />
+                            <p style={styles.summaryTitle}>Learn and explore anywhere</p>
+                            <div className='my-5'>
+                                <p style={styles.summaryText}>
+                                    With the new Audio Overview feature, transform
+                                </p>
+                                <p style={styles.summaryText}>
+                                    your sources into immersive “Deep Dive” conversations
+                                </p>
+                                <p style={styles.summaryText}>
+                                    instantly, keeping you informed on the go.
+                                </p>
+                            </div>
+                        </div>
+                        <div style={styles.imageContainer}>
+                            <img src="" alt="your sources" style={styles.image} />
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+            <section style={styles.privacy} className="privacy">
+                <div>
+                    <div style={styles.privs}>
+                        <p style={styles.priv}>Your privacy is our priority</p>
+                        <p style={styles.privdetail}>At Voicefy, we are committed to protecting your personal data. We do not use your uploaded content, queries, or model responses for training purposes, ensuring your information remains secure and private.</p>
+                    </div>
+                    <div style={styles.privimage}>
+                        <img src="" alt="your sources" style={styles.image} />
+                    </div>
+                </div>
+            </section>
+
+            <section >
+                <p style={styles.ideas}>See how users are unlocking smarter insights with Voicefy.</p>
+                <div style={styles.boxes}>
+                    <div style={styles.input} className="power">
+                        <FontAwesomeIcon icon={faGraduationCap} style={styles.iconss} />
+                        <p style={styles.bo}>Power Learning</p>
+                        <p style={styles.inputtext}>Upload lectures, textbooks, and research papers. Ask Voicefy to simplify complex topics, provide practical examples, and boost your comprehension. </p>
+                        <p style={styles.quote}>Learn smarter, faster.</p>
+                    </div>
+                    <div style={styles.input} className="streamline">
+                        <FontAwesomeIcon icon={faTableColumns} style={styles.iconss} />
+                        <p style={styles.bo}>Streamline Your Ideas</p>
+                        <p style={styles.inputtext}>Upload your materials, and let Voicefy craft a refined presentation outline with key points and supporting details. </p>
+                        <p style={styles.quote}>Deliver with clarity.</p>
+                    </div>
+                    <div style={styles.input} className="innovation">
+                        <FontAwesomeIcon icon={faLightbulb} style={styles.iconss} />
+                        <p style={styles.bo}>Ignite Innovation</p>
+                        <p style={styles.inputtext}>Upload brainstorming notes, market insights, and competitor analysis. Let Voicefy uncover trends, spark fresh ideas, and reveal untapped opportunities.
+                        </p>
+                        <p style={styles.quote}> Unleash your creative potential.</p>
+                    </div>
+                </div>
+            </section>
+        </div >
+    )
+}
+
+const styles = {
+    maindiv: {
+        backgroundColor: 'black',
+        textAlign: "center",
+        padding: "20px",
+        fontFamily: "Arial, sans-serif",
+    },
+    title: {
+        marginTop: "100px",
+        marginBottom: "30px",
+        fontSize: "65px",
+        fontWeight: " bolder",
+        color: 'rgb(173, 167, 167)'
+    },
+    p: {
+        fontSize: "25px",
+        fontWeight: "100",
+        color: 'rgb(95, 90, 90)'
+    },
+    color: {
+        color: "#c49a00",
+    },
+    heading: {
+        fontSize: "38px",
+        marginTop: "125px",
+        color: "rgb(173, 167, 167)",
+        cursor: 'pointer'
+    },
+    upload: {
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "center",
+        flexWrap: "wrap",
+        marginTop: "70px",
+    },
+    summary: {
+        flex: "1",
+        minWidth: "300px",
+        textAlign: "left",
+        marginBottom: "20px",
+        color: "#555",
+    },
+    summaryTitle: {
+        fontSize: "30px",
+        fontWeight: "100",
+        marginTop: "12px",
+        color: "#c49a00",
+        marginLeft: "150px"
+    },
+    icon: {
+        fontSize: "35px",
+        marginLeft: '150px',
+        color: 'rgb(173, 167, 167)',
+    },
+    summaryText: {
+        fontSize: "18px",
+        lineHeight: "1.5",
+        marginBottom: "5px",
+        color: "#6e6969",
+        marginLeft: '150px',
+        lineBreak: 'strict',
+
+    },
+    imageContainer: {
+        flex: "1",
+        minWidth: "300px",
+    },
+    image: {
+        marginTop: '100px',
+        width: "100%",
+        maxWidth: "650px",
+        height: "auto",
+        borderRadius: "8px",
+    },
+    privacy: {
+        marginTop: '20px',
+        boxShadow: '0px 4px 10px rgba(0,0,0, 0.3)',
+    },
+    priv: {
+        color: 'rgb(173, 167, 167)',
+        fontSize: '38px',
+    },
+    privdetail: {
+        color: '#6e6969',
+        fontSize: "20px",
+        lineHeight: "1.8",
+        marginTop: '40px',
+        marginLeft: '230px',
+        marginRight: '230px'
+    },
+    privs: {
+        marginTop: "200px"
+    },
+    privimage: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '0',
+        marginBottom: '0',
+    },
+    ideas: {
+        color: 'rgb(173, 167, 167)',
+        fontSize: '35px',
+        marginTop: '150px'
+    },
+    boxes: {
+        display: 'flex',
+        gap: '20px',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: '80px',
+    },
+    bo: {
+        color: '#c49a00',
+        fontSize: '28px'
+    },
+    inputtext: {
+        color: '#6e6969',
+        fontSize: "22px",
+        lineHeight: "2",
+        marginTop: "30px",
+        marginLeft: "80px",
+        marginRight: "80px"
+    },
+    quote: {
+        color: 'rgb(173, 167, 167)',
+        fontSize: '22px',
+        fontStyle: 'italic',
+        fontFamily: 'cursive',
+        marginTop: '30px'
+    },
+    iconss: {
+        color: 'rgb(173, 167, 167)',
+        fontSize: '43px',
+        marginBottom: '25px'
+    },
+    cursor: {
+        height: '30px',
+        width: '30px',
+        backgroundColor: "#c49a00",
+        borderRadius: '50px',
+        position: 'fixed',
+        // transform: `translate(${position.x}px, ${position.y}px)`
+        pointerEvents: "none",
+        left: -20,
+        top: -20,
+        // transform: "translate(-50%, -50%)", 
+        // transition: "transform 0.1s ease",
+        zIndex: 9999,
+        opacity: '0.5'
+    }
+}
+
+export default Body;
