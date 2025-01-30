@@ -16,13 +16,13 @@ function App() {
 
   return (
     <div>
-     {/* <Header />
-     <Body />
-     <Footer /> */}
-      <DashHeader />
-     {/* <Dashboard /> */}
-     {/* <Login /> */}
-     <InnerDashboard />
+      <Header />
+      <Body />
+      <Footer />
+      {/* <DashHeader /> */}
+      {/* <Dashboard /> */}
+      {/* <Login /> */}
+      {/* <InnerDashboard />  */}
     </div>
 
   )

@@ -9,9 +9,15 @@ import '../Header/header.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faInstagram, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [position, setposition] = useState({ x: 0, y: 0 });
+
+    const navigate=useNavigate();
+    const register=()=>{
+        navigate('/user/Register')
+    }
 
     windowlistner('pointermove', (e) => {
         setposition({ x: e.clientX, y: e.clientY })
@@ -51,7 +57,7 @@ function Login() {
                     >Login</motion.button>
                     <motion.div className="Account" style={styles.accountText} >
                         No account yet?{" "}
-                        <motion.a title="No account" href="#register" style={styles.links}>
+                        <motion.a title="No account" style={styles.links} onClick={register} >
                             Create your account now
                         </motion.a>
                     </motion.div>

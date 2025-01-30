@@ -3,8 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBolt, faGraduationCap, faHeadphones, faLightbulb, faTableColumns, faUser } from '@fortawesome/free-solid-svg-icons';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react'
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { windowlistner } from "./WindowListener";
+import { Link, useNavigate } from "react-router-dom";
 import './Body.css'
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,9 +13,12 @@ gsap.registerPlugin(ScrollTrigger);
 function Body() {
     const [position, setposition] = useState({ x: 0, y: 0 });
 
+    const navigate = useNavigate();
+
     windowlistner('pointermove', (e) => {
         setposition({ x: e.clientX, y: e.clientY })
     })
+
 
     useGSAP(() => {
         gsap.from(".summary", {
@@ -106,7 +110,7 @@ function Body() {
         let tl = gsap.from(".streamline", {
             y: 200,
             opacity: 0,
-            delay: 1.5,
+            delay: 1,
             duration: 1,
             scrollTrigger: ".streamline"
         })
@@ -116,13 +120,17 @@ function Body() {
         let tl = gsap.from(".innovation", {
             x: 100,
             opacity: 0,
-            delay: 2,
+            delay: 1,
             duration: 1,
             scrollTrigger: ".innovation"
         })
     })
+
+    const travel = () => {
+        navigate('user/Register')
+    }
     return (
-        <div style={styles.maindiv}>
+        <div style={styles.maindiv} className="!scroll-smooth">
             <div className="cursor" style={{
                 ...styles.cursor,
                 transform: `translate(${position.x}px, ${position.y}px)`
@@ -136,7 +144,7 @@ function Body() {
                     <p>The ultimate tool to bring your words to life,</p>
                     <p>powered by innovation.</p>
                 </div>
-                <button style={styles.button} className="button">Try VoxiFY</button>
+                <button style={styles.button} className="button" onClick={travel} >Try VoxiFY</button>
             </div>
             <section style={styles.section}>
                 <div >
@@ -251,7 +259,7 @@ function Body() {
                     </div>
                 </div>
             </section>
-        </div >
+        </div>
     )
 }
 
@@ -334,7 +342,7 @@ const styles = {
         boxShadow: '0px 4px 10px rgba(0,0,0, 0.3)',
     },
     priv: {
-        color: 'rgb(173, 167, 167)',
+        color: '#c49a00',
         fontSize: '38px',
     },
     privdetail: {

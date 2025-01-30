@@ -20,6 +20,10 @@ function Dashboard() {
         setposition({ x: e.clientX, y: e.clientY })
     })
 
+    const news=()=>{
+       
+    }
+
     return (
         <div style={styles.maindiv}>
             <div className="cursor" style={{
@@ -46,7 +50,7 @@ function Dashboard() {
                         }}
                     >
                         <FontAwesomeIcon icon={faPlus} style={styles.icon} />
-                        <button>Create new</button>
+                        <button onClick={news}>Create new</button>
                     </motion.div>
                     <motion.div style={styles.row_col}
                         whileHover={{

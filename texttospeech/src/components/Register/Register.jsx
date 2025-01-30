@@ -8,14 +8,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faInstagram, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import '../Header/header.css'
+import { useNavigate } from "react-router-dom";
 
 function Register() {
 
     const [position, setposition] = useState({ x: 0, y: 0 });
+    const navigate =useNavigate();
 
     windowlistner('pointermove', (e) => {
         setposition({ x: e.clientX, y: e.clientY })
     })
+
+    const login=()=>{
+        navigate('/user/Login')
+    }
     return (
         <motion.div style={styles.login}>
             <div className="cursor" style={{
@@ -60,7 +66,7 @@ function Register() {
                     >Register</motion.button>
                     <motion.div className="Account" style={styles.accountText} >
                         Already have account?{" "}
-                        <motion.a title="No account" href="#register" style={styles.links}>
+                        <motion.a title="No account" onClick={login} style={styles.links}>
                             Login!
                         </motion.a>
                     </motion.div>

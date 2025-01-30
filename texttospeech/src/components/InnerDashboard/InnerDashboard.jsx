@@ -54,6 +54,7 @@ function InnerDashboard() {
 
     const cancell = () => {
         setdeletes(!deletess)
+        document.getElementById('alls').style.filter = 'none'
     }
 
     const cancal = () => {
