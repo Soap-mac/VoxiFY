@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBolt, faGraduationCap, faHeadphones, faLightbulb, faTableColumns, faUser } from '@fortawesome/free-solid-svg-icons';
 import gsap from 'gsap';
@@ -6,18 +6,30 @@ import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { windowlistner } from "./WindowListener";
 import { Link, useNavigate } from "react-router-dom";
+import Axios from 'axios'
 import './Body.css'
 
 gsap.registerPlugin(ScrollTrigger);
 
 function Body() {
     const [position, setposition] = useState({ x: 0, y: 0 });
+    const [backend, setbackend] = useState('');
 
     const navigate = useNavigate();
 
     windowlistner('pointermove', (e) => {
         setposition({ x: e.clientX, y: e.clientY })
     })
+
+    const getdata = async () => {
+        const res = await Axios.get("http://localhost:3001")
+        setbackend(res.data.message)
+        console.log(res.data.message)
+    }
+
+    useEffect(() => {
+        getdata()
+    }, [])
 
 
     useGSAP(() => {
@@ -137,6 +149,7 @@ function Body() {
             }}></div>
             <div style={styles.bodyContainer}>
                 <div style={styles.title} className="Title">
+                    {/* <p className=" bg-white">{backend}</p> */}
                     <p className="text">Text That Speaks,</p>
                     <h1 style={styles.color} className="efforts">Effortlessly!</h1>
                 </div>
@@ -269,6 +282,7 @@ const styles = {
         textAlign: "center",
         padding: "20px",
         fontFamily: "Arial, sans-serif",
+        background: 'linear-gradient()'
     },
     title: {
         marginTop: "100px",

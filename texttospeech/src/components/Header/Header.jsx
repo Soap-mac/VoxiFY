@@ -30,7 +30,7 @@ const styles = {
         fontFamily: "Arial, sans-serif",
         marginLeft: '200px',
         fontSize: '25px',
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     header: {
         textAlign: 'center',

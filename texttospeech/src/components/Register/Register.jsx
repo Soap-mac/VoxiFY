@@ -9,25 +9,66 @@ import { faGithub, faInstagram, faLinkedin } from "@fortawesome/free-brands-svg-
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import '../Header/header.css'
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Register() {
 
     const [position, setposition] = useState({ x: 0, y: 0 });
-    const navigate =useNavigate();
+    const navigate = useNavigate();
+
+    const [name, setname] = useState('')
+    const [username, setusername] = useState('')
+    const [email, setemail] = useState('')
+    const [password, setpassword] = useState('')
+    const [confirm, setconfirm] = useState('')
+
+    const [errors, setErrors] = useState('');
+
+    const submits = async (event) => {
+        event.preventDefault();
+        setname('')
+        setusername('')
+        setemail('')
+        setpassword('')
+        setconfirm('')
+
+        try {
+            const response = await axios.post('http://localhost:3001/user/Register', { name, username, email, password, confirm })
+            console.log(response.data)
+            if (response.data.success === 'true') {
+                navigate('/user/Login')
+            }
+            if (response.data.success === 'false') {
+                navigate('/user/Register')
+                setErrors(response.data.error[0].msg)
+            }
+            console.log(name, username, email, password, confirm)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     windowlistner('pointermove', (e) => {
         setposition({ x: e.clientX, y: e.clientY })
     })
 
-    const login=()=>{
+    const login = () => {
         navigate('/user/Login')
     }
+
+    function timingout() {
+        setTimeout(() => {
+            setErrors('')
+        }, 4000);
+    }
+    // 
     return (
         <motion.div style={styles.login}>
             <div className="cursor" style={{
                 ...styles.cursor,
                 transform: `translate(${position.x}px, ${position.y}px)`
             }}></div>
+
             <motion.div style={styles.innerLogin}>
                 <motion.div >
                     <p style={styles.heading}>Register</p>
@@ -36,23 +77,23 @@ function Register() {
                 <motion.div>
                     <motion.div style={styles.emailContainer}>
                         <label htmlFor="name" style={styles.label}>Name</label>
-                        <input style={styles.input} type="name" id="name" name="name" placeholder="Enter your Name" required></input>
+                        <input style={styles.input} type="name" id="name" name="name" value={name} onChange={(event) => { setname(event.target.value) }} placeholder="Enter your Name" required></input>
                     </motion.div>
                     <motion.div style={styles.emailContainer}>
                         <label htmlFor="username" style={styles.label}>Username</label>
-                        <input style={styles.input} type="username" id="username" name="username" placeholder="Enter your Username" required></input>
+                        <input style={styles.input} type="username" id="username" name="username" value={username} onChange={(event) => { setusername(event.target.value) }} placeholder="Enter your Username" required></input>
                     </motion.div>
                     <motion.div style={styles.emailContainer}>
                         <label htmlFor="email" style={styles.label}>Email</label>
-                        <input style={styles.input} type="email" id="email" name="email" placeholder="Enter your Email" required></input>
+                        <input style={styles.input} type="email" id="email" name="email" value={email} placeholder="Enter your Email" onChange={(event) => { setemail(event.target.value) }} required></input>
                     </motion.div>
                     <motion.div style={styles.emailContainer}>
                         <label htmlFor="password" style={styles.label}>Password</label>
-                        <input style={styles.input} type="password" id="password" name="password" placeholder="Enter your Password"></input>
+                        <input style={styles.input} type="password" id="password" name="password" value={password} onChange={(event) => { setpassword(event.target.value) }} placeholder="Enter your Password"></input>
                     </motion.div>
                     <motion.div style={styles.emailContainer}>
                         <label htmlFor="confirm_password" style={styles.labels}>Confirm_Password</label>
-                        <input style={styles.input} type="confirm_password" id="confirm_password" name="confirm_password" placeholder="Enter your Confirm_Password"></input>
+                        <input style={styles.input} type="password" id="confirm_password" value={confirm} name="confirm_password" onChange={(event) => setconfirm(event.target.value)} placeholder="Enter your Confirm_Password"></input>
                     </motion.div>
                     <motion.button style={styles.button}
                         whileHover={{
@@ -63,7 +104,8 @@ function Register() {
                         whileTap={{
                             scale: 1.01,
                         }}
-                    >Register</motion.button>
+                        type="submit"
+                        onClick={submits}>Register</motion.button>
                     <motion.div className="Account" style={styles.accountText} >
                         Already have account?{" "}
                         <motion.a title="No account" onClick={login} style={styles.links}>
@@ -72,13 +114,18 @@ function Register() {
                     </motion.div>
                     <motion.div style={styles.icons}>
                         <motion.div>
-                            <a href="https://www.instagram.com/_abhinv04"><FontAwesomeIcon icon={faInstagram} style={styles.icon} className="iconsss"/></a>
+                            <a href="https://www.instagram.com/_abhinv04"><FontAwesomeIcon icon={faInstagram} style={styles.icon} className="iconsss" /></a>
                             <a href="https://x.com/abhinab981"><FontAwesomeIcon icon={faX} style={styles.icon} className="iconsss" /></a>
                             <a href="https://www.linkedin.com/in/abhinab-sharma-220918280/"> <FontAwesomeIcon icon={faLinkedin} style={styles.icon} className="iconsss" /></a>
                             <a href="https://github.com/Abhinab04"><FontAwesomeIcon icon={faGithub} style={styles.icon} className="iconsss" /></a>
                         </motion.div>
                     </motion.div>
                 </motion.div>
+            </motion.div>
+            <motion.div>
+                {errors && (
+                    <p className="error" style={styles.error} {...timingout()} > {errors} </p>
+                )}
             </motion.div>
         </motion.div>
     )
@@ -135,7 +182,6 @@ const styles = {
         border: '1px solid rgb(173, 167, 167)',
         backgroundColor: 'rgb(30, 30, 30)',
         color: 'white',
-        border: 'none',
         marginBottom: '8px'
     },
     link: {
@@ -172,5 +218,18 @@ const styles = {
         zIndex: 9999,
         opacity: '0.5'
     },
+    error: {
+        position: 'absolute',
+        top: '20px',
+        right: '20px',
+        backgroundColor: 'rgba(255, 0, 0, 0.8)',
+        color: 'white',
+        padding: '13px 35px',
+        borderRadius: '7px',
+        fontSize: '16px',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        boxShadow: '0px 0px 10px rgba(255, 0, 0, 0.5)'
+    }
 }
 export default Register
