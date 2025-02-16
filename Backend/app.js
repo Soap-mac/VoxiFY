@@ -1,12 +1,15 @@
 const express = require('express')
 const session = require('express-session')
-const mongoose=require('mongoose')
+const mongoose = require('mongoose')
+const passport = require('passport')
 const cors = require('cors');
+const { ensureAuthentication } = require('./config/off')
 
 const app = express()
 app.use(cors());
 app.use(express.json())
 const port = 3001;
+require('./config/passport')(passport)
 
 //mongodb connection string
 const db = require('./config/key').MongoURI;
@@ -26,13 +29,19 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use(session({
     secret: 'secret',
-    saveUninitialized: true,
+    saveUninitialized: false,
     resave: false,
     // cookie: { secure: process.env.ENV === 'PRODUCTION' }  production mai jab daalenge tab comment out kar denge
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/user', require('./Route/user'))
 
+app.get('/ensure', ensureAuthentication, (req, res) => {
+    res.json({ success: 'true', message: 'user is Authenticated' })
+})
 app.listen(port, () => {
     console.log(`port is listening ${port}`)
 })

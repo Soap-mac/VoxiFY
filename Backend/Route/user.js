@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport')
 const bcrypt = require('bcryptjs')
 
 const User = require('../models/Users')
+require('../config/passport')(passport)
 
 
 router.post('/Register', (req, res) => {
@@ -29,11 +31,22 @@ router.post('/Register', (req, res) => {
         return res.json({ success: 'false', msg: "re render the register", error })
     }
     else {
-        User.findOne({ username: username })             //finding id user exist or not
+        User.findOne({
+            $or: [
+                { username: username },
+                { email: email }
+            ]
+        }) //finding id user exist or not and checking email exist or not
             .then(user => {
                 if (user) {
-                    error.push({ msg: 'username already exist' })
-                    return res.json({ success: 'false', msg: 're render the page', error })
+                    if (user.username === username) {
+                        error.push({ msg: 'username already exist' })
+                        return res.json({ success: 'false', msg: 're render the page', error })
+                    }
+                    if (user.email === email) {
+                        error.push({ msg: 'email already exist' })
+                        return res.json({ success: 'false', msg: 're render the page', error })
+                    }
                 }
                 else {
                     const newuser = new User({
@@ -65,11 +78,34 @@ router.post('/Register', (req, res) => {
 
 
 router.post('/Login', (req, res, next) => {
-    passport.authenticate('local', {
-        successRedirect: res.json({ success: 'true', message: 'redirect to dashboard' }),
-        failureRedirect: res.json({ success: 'false', message: 'login' }),
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ success: false, message: "Server error" });
+        }
+        if (!user) {
+            return res.json({ success: 'false', message: "User not Registered" })
+        }
+        req.logIn(user, (err) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({ success: false, message: "Server error" });
+            }
+            else {
+                return res.json({ success: "true", message: "Redirect to dashboard" })
+            }
+        })
     })(req, res, next)
 
+})
+
+router.get('/Logout', (req, res) => {
+    req.logout(req.user, err => {
+        if (err) {
+            console.log(err);
+        }
+    });
+    return res.json({ success: 'true' })
 })
 
 
