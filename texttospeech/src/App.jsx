@@ -9,7 +9,7 @@ import DashHeader from './components/Dashboard/Header/DashHeader'
 import Dashboard from './components/Dashboard/Body/Dashboard'
 import Login from './components/Login/Login'
 import Register from './components/Register/Register'
-import InnerDashboard from './components/InnerDashboard/InnerDAshboard'
+import InnerDashboard from './components/InnerDashboard/InnerDashboard'
 
 function App() {
   const [count, setCount] = useState(0)

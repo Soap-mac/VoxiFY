@@ -61,7 +61,6 @@ function Register() {
             setErrors('')
         }, 4000);
     }
-    // 
     return (
         <motion.div style={styles.login}>
             <div className="cursor" style={{

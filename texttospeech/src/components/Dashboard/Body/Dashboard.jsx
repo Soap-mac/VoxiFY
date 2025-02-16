@@ -20,8 +20,8 @@ function Dashboard() {
         setposition({ x: e.clientX, y: e.clientY })
     })
 
-    const news=()=>{
-       
+    const news = () => {
+
     }
 
     return (

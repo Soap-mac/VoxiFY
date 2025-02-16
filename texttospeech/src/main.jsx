@@ -8,7 +8,19 @@ import Body from './components/LandingPage/Body.jsx'
 import Login from './components/Login/Login.jsx'
 import Register from './components/Register/Register.jsx'
 import Dashboard from './components/Dashboard/Body/Dashboard.jsx'
-import InnerDashboard from './components/InnerDashboard/InnerDAshboard.jsx'
+import InnerDashboard from './components/InnerDashboard/InnerDashboard.jsx'
+import axios from "axios";
+
+
+try {
+  const res = await axios.get('http://localhost:3001/ensure')
+  console.log(res.data.success)
+} catch (error) {
+  console.log(error);
+}
+
+
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,7 +30,7 @@ const router = createBrowserRouter(
         <Route path='Login' element={<Login />} />
         <Route path='Register' element={<Register />} />
       </Route>
-      <Route path='Dashboard'>
+      <Route off path='Dashboard'>
         <Route index element={<Dashboard />} />
         <Route path='Voxify' element={<InnerDashboard />} />
       </Route>

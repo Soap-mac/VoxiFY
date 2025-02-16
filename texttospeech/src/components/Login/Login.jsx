@@ -17,11 +17,18 @@ const backgroundAnimation = {
     backgroundPosition: ["0% 70%", "100% 50%", "0% 70%"],
     transition: { duration: 15, ease: "easeIn", repeat: Infinity, zIndex: -1 }
 };
+
+function timingout() {
+    setTimeout(() => {
+        setErrors('')
+    }, 4000);
+}
 function Login() {
     const [position, setposition] = useState({ x: 0, y: 0 });
 
     const [email, setemail] = useState('')
     const [password, setpassword] = useState('');
+    const [error, seterror] = useState('');
 
 
     const submit = async (e) => {
@@ -32,8 +39,15 @@ function Login() {
 
         try {
             const res = await axios.post('http://localhost:3001/user/Login', { email, password })
-            console.log(email, password)
-            console.log("data tarnsfer sucessfully " + res.data)
+            console.log("data tarnsfer sucessfully " + res.data.success)
+
+            if (res.data.success === 'true') {
+                navigate('/Dashboard')
+            }
+            if (res.data.success === 'false') {
+                navigate('/user/Login');
+                seterror('User not Registered')
+            }
         } catch (error) {
             console.log(error)
         }
@@ -60,7 +74,7 @@ function Login() {
                 </motion.div>
                 <motion.div style={styles.inputContainer}>
                     <motion.div style={styles.emailContainer}>
-                        <label htmlFor="email" style={styles.label}>Email</label>
+                        <label htmlFor="Username" style={styles.label}>Email</label>
                         <input style={styles.input} onChange={(e) => { setemail(e.target.value) }} value={email} type="email" id="email" name="email" placeholder="Enter your Email"></input>
                     </motion.div>
                     <br></br>
@@ -96,6 +110,11 @@ function Login() {
                     </motion.div>
                 </motion.div>
             </motion.form>
+            <motion.div>
+                {error && (
+                    <p className="error" style={styles.error} {...timingout()} > {error} </p>
+                )}
+            </motion.div>
         </motion.div>
     )
 }
@@ -184,6 +203,19 @@ const styles = {
         // transition: "transform 0.1s ease",
         zIndex: 9999,
         opacity: '0.5'
+    },
+    error: {
+        position: 'absolute',
+        top: '20px',
+        right: '20px',
+        backgroundColor: 'rgba(255, 0, 0, 0.8)',
+        color: 'white',
+        padding: '13px 35px',
+        borderRadius: '7px',
+        fontSize: '16px',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        boxShadow: '0px 0px 10px rgba(255, 0, 0, 0.5)'
     }
 }
 

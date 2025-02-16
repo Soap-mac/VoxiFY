@@ -4,12 +4,29 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import '../../Header/header.css'
 import { motion } from "framer-motion";
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 function DashHeader() {
     const [dropdown, setdropdown] = useState(false)
 
     const down = () => {
         setdropdown(!dropdown)
+    }
+
+    const navigate = useNavigate();
+
+
+    const logout = async () => {
+        try {
+            const response = await axios.get('http://localhost:3001/user/Logout')
+            console.log(response.data.success);
+            if (response.data.success === 'true') {
+                navigate('/user/Login')
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -31,6 +48,7 @@ function DashHeader() {
                                     <a style={styles.dropdownitems} className="helps">Send feedback</a>
                                     <a style={styles.dropdownitems} className="helps">Profile</a>
                                     <a style={styles.dropdownitems} className="helps">Discord</a>
+                                    <a onClick={logout} style={styles.dropdownitems} className="helps">Logout</a>
                                 </div>
                                 )}
                         </div>
@@ -53,12 +71,12 @@ const styles = {
         marginLeft: '80px',
         fontSize: '25px',
         cursor: 'pointer',
-        display:'flex',
+        display: 'flex',
         alignItems: 'center',
         gap: '10px',
     },
-    ify:{
-      color:'#c49a00'
+    ify: {
+        color: '#c49a00'
     },
     header: {
         textAlign: 'center',
@@ -97,9 +115,9 @@ const styles = {
         fontSize: '20px',
         cursor: 'pointer',
         marginRight: '18px',
-        display:'flex',
-        justifyContent:'center',
-        alignItems:'center',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     dropdownMenu: {
         position: 'absolute',
@@ -113,18 +131,18 @@ const styles = {
         border: '2px solid white',
         display: 'inline-block',
         marginLeft: '30px',
-        textDecoration:'none'
+        textDecoration: 'none'
     },
-    gear:{
-        display:'flex',
-        justifyContent:'center',
-        alignItems:'center',
-        gap:'10px',
-        padding:'1px 15px'
+    gear: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '1px 15px'
     },
-    icon:{
-        fontSize:'20px',
-        marginTop:'8px'
+    icon: {
+        fontSize: '20px',
+        marginTop: '8px'
     }
 };
 
