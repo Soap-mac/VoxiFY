@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faColumns, faDownload, faEllipsisVertical, faFilePdf, faList, faUpload, faVolumeHigh, faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faColumns, faDownload, faEllipsisVertical, faFilePdf, faList, faUpload, faVolumeHigh, faArrowUp, faNoteSticky } from '@fortawesome/free-solid-svg-icons';
 import { windowlistner } from "../LandingPage/WindowListener";
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import axios from 'axios';
 import '../Header/header.css'
+import './InnerDashboard.css'
 
 function InnerDashboard() {
 
@@ -18,6 +19,13 @@ function InnerDashboard() {
     const [dots, setdots] = useState(false)
     const [deletess, setdeletes] = useState(false)
     const [displayName, setDisplayName] = useState('');
+    const [messages, setMessages] = useState([]);
+    const [inputText, setInputText] = useState('');
+    const chatEndRef = useRef(null);
+
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
 
 
     const closing = () => {
@@ -108,6 +116,29 @@ function InnerDashboard() {
         console.log(value2)
     }
 
+    const sendMessage = async () => {
+        if (!inputText.trim()) return;
+
+        const userMessage = { sender: 'user', text: inputText };
+        setMessages(prev => [...prev, userMessage]);
+        setInputText('');
+
+        try {
+            const response = await axios.post('http://localhost:3001/chat', {
+                prompt: inputText
+            });
+
+            const botReply = { sender: 'bot', text: response.data.reply };
+            setMessages(prev => [...prev, botReply]);
+
+        } catch (error) {
+            console.error('Chat error:', error);
+            const errorMsg = { sender: 'bot', text: 'Error: Unable to get response.' };
+            setMessages(prev => [...prev, errorMsg]);
+        }
+    };
+
+
     return (
         <div style={styles.Inner}>
             <div className="cursor" style={{
@@ -179,44 +210,39 @@ function InnerDashboard() {
                         <p style={styles.title}>Chat</p>
                     </div>
                     <div style={styles.uploadsources}>
-                        <FontAwesomeIcon icon={faUpload} style={styles.icon} />
-                        <p style={styles.quote}>Summarize your text with our AI feature</p>
+                    <h1>Summarize </h1>
+                        <div className="chatting" style={styles.chatting}>
+                            {messages.map((msg, index) => (
+                                <div key={index} style={{
+                                    textAlign: msg.sender === 'user' ? 'right' : 'left',
+                                    margin: '10px 0'
+                                }}>
+                                    <div style={styles.msg}>
+                                        {msg.text}
+                                    </div>
+                                </div>
+                            ))}
+                            <div ref={chatEndRef}></div>
+                        </div>
 
-                        {/* ChatGPT-like textarea */}
-                        <div style={styles.uploadsourcesWrapper}>
-                            <div>
-                                <textarea
-                                    placeholder="Ask anything..."
-                                    style={styles.textarea}
-                                    rows={1}
-                                ></textarea>
-                                <FontAwesomeIcon icon={faArrowUp} style={styles.arrow} />
-                            </div>
-
-                            <div style={styles.buttonRow}>
-                                <motion.button style={styles.uploadButton}
-                                    whileHover={{
-                                        scale: 1.04,
-                                        background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
-                                        boxShadow: '0 10px 20px rgba(78, 205, 196, 0.2)',
-                                        color: 'white'
-                                    }}
-                                    whileTap={{
-                                        scale: 1.01
-                                    }}
-                                >Summarize</motion.button>
-                                <motion.button style={styles.uploadButton}
-                                    whileHover={{
-                                        scale: 1.04,
-                                        background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
-                                        boxShadow: '0 10px 20px rgba(78, 205, 196, 0.2)',
-                                        color: 'white'
-                                    }}
-                                    whileTap={{
-                                        scale: 1.01
-                                    }}
-                                >Summarize</motion.button>
-                            </div>
+                        <div style={styles.text} >
+                            <textarea
+                                type="text"
+                                value={inputText}
+                                onChange={e => setInputText(e.target.value)}
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter' && !e.shiftKey) {
+                                        e.preventDefault;
+                                        sendMessage();
+                                    }
+                                }}
+                                placeholder="Type your message..."
+                                style={{ ...styles.inputt }}
+                            />
+                            <motion.button
+                                onClick={sendMessage} style={styles.sendbtn} >
+                                <FontAwesomeIcon style={styles.arrowup} icon={faArrowUp} />
+                            </motion.button>
                         </div>
                     </div>
                 </div>
@@ -368,7 +394,7 @@ const styles = {
     },
     chat: {
         border: "1px solid gray",
-        padding: "35px",
+        padding: "20px",
         borderRadius: "8px",
         width: "60%",
         textAlign: "center",
@@ -378,6 +404,7 @@ const styles = {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+
     },
     sourcesHeader: {
         display: "block",
@@ -473,8 +500,9 @@ const styles = {
         borderBottom: "1px solid white", // Add a border here
     },
     uploadsources: {
-        marginBottom: '200px',
+        // marginBottom: '200px',
         textAlign: 'center',
+        justifyContent: 'space-between',
     },
     cursor: {
         transition: "all 0.2s ease",
@@ -584,10 +612,6 @@ const styles = {
         margin: '5px 0',
         fontWeight: 'bold',
     },
-    input: {
-        backgroundColor: 'black',
-        color: 'white'
-    },
     down: {
         fontSize: '23px',
         color: 'white',
@@ -627,7 +651,60 @@ const styles = {
     },
     uploadsourcesWrapper: {
         marginTop: '50px'
-    }
+    },
+    text: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        marginTop: '10px',
+        backgroundColor: '#2a2a2a',
+        padding: '10px 10px',
+        borderRadius: '10px',
+        border: '1px solid rgba(78, 205, 196, 0.3)',
+        boxShadow: '0 0 15px rgba(78, 205, 196, 0.3)',
+    },
+    inputt: {
+        flexGrow: 1,
+        backgroundColor: 'transparent',
+        border: 'none',
+        color: 'white',
+        fontSize: '16px',
+        outline: 'none',
+        padding: '10px',
+        overflowY: 'auto',
+        resize: 'none',
+        lineHeight: '1.4',
+        maxHeight: '150px',
+        minHeight: '40px',
+        width: '100%',
+        fontFamily: 'inherit',
+    },
+    arrowup: {
+        fontSize: '21px',
+        position: 'relative',
+        right: '15px'
+    },
+    chatting: {
+        flexGrow: 1,
+        padding: '10px',
+        maxHeight: '400px',
+        overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        maxWidth: '100%',
+    },
+    msg: {
+        color: 'white',
+        padding: '10px',
+        borderRadius: '8px',
+        display: 'inline-block',
+        maxWidth: '80%',
+        wordBreak: 'break-word',
+        whiteSpace: 'pre-wrap',
+        overflowWrap: 'break-word',
+        overflow: 'auto',
+
+    },
 };
 
 export default InnerDashboard;
