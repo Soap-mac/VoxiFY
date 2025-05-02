@@ -1,0 +1,269 @@
+
+
+Linear Algebra and Its Applications
+Fourth Edition
+Gilbert Strang
+y
+x y z   
+z
+Ax  b
+b
+0
+Ay b
+0Az
+0
+
+2Chapter 1  Matrices and Gaussian Elimination
+That could seem a little mysterious, unless you already know about 2 by 2 determi-
+nants. They gave the same answery=2, coming from the same ratio of−6to−3.
+If we stay with determinants (which we don’t plan to do), there will be a similar
+formula to compute the other unknown,x:
+x=
+∣
+∣
+∣
+∣
+∣
+3   2
+6   5
+∣
+∣
+∣
+∣
+∣
+∣
+∣
+∣
+∣
+∣
+1   2
+4   5
+∣
+∣
+∣
+∣
+∣
+=
+3·5−2·6
+1·5−2·4
+=
+3
+−3
+=−1.(5)
+Let me compare those two approaches,  looking ahead to real problems whennis
+much larger (n=1000is a very moderate size in scientific computing). The truth is that
+direct use of the determinant formula for 1000 equations would be a total disaster.  It
+would use the million numbers on the left sides correctly, but not efficiently.  We will
+find that formula (Cramer’s Rule) in Chapter 4, but we want a good method to solve
+1000 equations in Chapter 1.
+That good method isGaussian Elimination.  This is the algorithm that is constantly
+used to solve large systems of equations.  From the examples in a textbook (n=3is
+close to the upper limit on the patience of the author and reader) too might not see much
+difference. Equations (2) and (4) used essentially the same steps to findy=2. Certainly
+xcame faster by the back-substitution in equation (3) than the ratio in (5).  For larger
+nthere is absolutely no question.  Elimination wins (and this is even the best way to
+compute determinants).
+The idea of elimination is deceptively simple—you will master it after a few exam-
+ples.  It will become the basis for half of this book, simplifying a matrix so that we can
+understand it.  Together with the mechanics of the algorithm, we want to explain four
+deeper aspects in this chapter. They are:
+1.Linear equations lead togeometry of planes.   It is not easy to visualize a nine-
+dimensional plane in ten-dimensional space. It is harder to see ten of those planes,
+intersecting at the solution to ten equations—but somehow this is almost possible.
+Our  example  has  two  lines  in  Figure  1.1,  meeting  at  the  point(x,y) = (−1,2).
+Linear algebra moves that picture into ten dimensions, where the intuition has to
+imagine the geometry (and gets it right)
+2.We move tomatrix notation, writing thenunknowns as a vectorxand thenequa-
+tions asAx=b.  We multiplyAby “elimination matrices” to reach an upper trian-
+gular matrixU.  Those steps factorAintoLtimesU, whereLis lower triangular.
+I will write downAand its factors for our example, and explain them at the right
+time:
+FactorizationA=
+[
+1   2
+4   5
+]
+=
+[
+1   0
+4   1
+][
+12
+0−3
+]
+=LtimesU.(6)
+
+1.1  Introduction3
+y
+x
+b
+x+ 2y= 3
+x=−1
+y= 2
+4x+ 5y= 6
+One solution(x, y) = (−1,2)
+y
+x
+x+ 2y= 3
+4x+ 8y= 6
+Parallel:  No solution
+y
+x
+x+ 2y= 3
+4x+ 8y= 12
+Whole line of solutions
+Figure 1.1:The example has one solution. Singular cases have none or too many.
+First we have to introduce matrices and vectors and the rules for multiplication.
+Every matrix has atransposeA
+T
+. This matrix has aninverseA
+−1
+.
+3.In  most  cases  elimination  goes  forward  without  difficulties.   The  matrix  has  an
+inverse and the systemAx=bhas one solution.  In exceptional cases the method
+willbreak down—either the equations were written in the wrong order, which is
+easily fixed by exchanging them, or the equations don’t have a unique solution.
+Thatsingular casewill appear if 8 replaces 5 in our example:
+Singular case
+Two parallel lines
+1x+2y=3
+4x+8y=6.
+(7)
+Elimination still innocently subtracts 4 times the first equation from the second. But
+look at the result!
+(equation 2)−4(equation 1)0=−6.
+This singular case hasno solution. Other singular cases haveinfinitely many solu-
+tions.  (Change 6 to 12 in the example, and elimination will lead to0=0.  Nowy
+can haveany value,) When elimination breaks down, we want to find every possible
+solution.
+4.We need a rough count of thenumber of elimination stepsrequired to solve a sys-
+tem of sizen.  The computing cost often determines the accuracy in the model.  A
+hundred equations require a third of a million steps (multiplications and subtrac-
+tions).  The computer can do those quickly,  but not many trillions.  And already
+after a million steps, roundoff error could be significant.  (Some problems are sen-
+sitive; others are not.)  Without trying for full detail, we want to see large systems
+that arise in practice, and how they are actually solved.
+The final result of this chapter will be an elimination algorithm that is about as effi-
+cient as possible.  It is essentially the algorithm that is in constant use in a tremendous
+variety of applications. And at the same time, understanding it in terms ofmatrices—the
+coefficient matrixA, the matricesEfor elimination andPfor row exchanges, and the
+
+4Chapter 1  Matrices and Gaussian Elimination
+final factorsLandU—is an essential foundation for the theory.  I hope you will enjoy
+this book and this course.
+1.2    The Geometry of Linear Equations
+The way to understand this subject is by example. We begin with two extremely humble
+equations,  recognizing  that  you  could  solve  them  without  a  course  in  linear  algebra.
+Nevertheless I hope you will give Gauss a chance:
+2x−y=1
+x+y=5.
+We can look at that systemby rowsorby columns. We want to see them both.
+The  first  approach  concentrates  on  the  separate  equations  (therows).   That  is  the
+most familiar, and in two dimensions we can do it quickly.  The equation2x−y=1is
+represented by astraight linein thex-yplane.  The line goes through the pointsx=1,
+y=1andx=
+1
+2
+,y=0(and also through(2,3)and all intermediate points). The second
+equationx+y=5produces a second line (Figure 1.2a). Its slope isdy/dx=−1and it
+crosses the first line at the solution.
+The point of intersection lies on both lines.  It is the only solution to both equations.
+That pointx=2andy=3will soon be found by “elimination.”
+b
+b
+(0,5)
+(0,−1)
+(
+1
+2
+,0)
+x+y= 5
+2x−y= 1
+x
+y
+(5,0)
+(x, y) = (2,3)
+(a) Lines meet atx= 2,y= 3
+bb
+b
+b
+b
+(−3,3)
+(−1,1)(2,1) = column 1
+(4,2)
+(1,5) =
+2 (column 1)
++3 (column 2)
+(b) Columns combine with 2 and 3
+Figure 1.2:Row picture (two lines) and column picture (combine columns).
+The second approach looks at thecolumnsof the linear system.  The two separate
+equations are reallyone vector equation:
+Column formx
+[
+2
+1
+]
++y
+[
+−1
+1
+]
+=
+[
+1
+5
+]
+.
+
+CONTENTSiii
+B   The Jordan Form466
+C   Matrix Factorizations473
+D   Glossary: A Dictionary for Linear Algebra475
+E   MATLAB Teaching Codes484
+F    Linear Algebra in a Nutshell486
+A
+T
+~y=
+~
+0
+A~x=
+~
+0
+~
+0
+~
+0
+R
+n
+R
+m
+Row SpaceColumn Space
+allA
+T
+~yallA~x
+Null
+Space
+Left
+Null Space
+A~x=
+~
+b
+A
+T
+~y=~c
+C(A
+T
+)
+dimr
+C(A)
+dimr
+N(A)
+dimn−r
+N(A
+T
+)
+dimm−r
+  
+
+
+

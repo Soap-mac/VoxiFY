@@ -38,10 +38,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/user', require('./Route/user'))
+app.use('/audio',require('./Route/audio'))
+app.use('/Chat',require('./Route/chat'))
 
-app.get('/ensure', ensureAuthentication, (req, res) => {
-    res.json({ success: 'true', message: 'user is Authenticated' })
-})
 app.listen(port, () => {
     console.log(`port is listening ${port}`)
 })
