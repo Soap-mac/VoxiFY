@@ -42,24 +42,26 @@ function Dashboard() {
                     <motion.div style={styles.set}
                         whileHover={{
                             scale: 1.04,
-                            color: 'black',
-                            backgroundColor: 'rgb(173, 167, 167)'
+                            background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
+                            boxShadow: '0 10px 20px rgba(78, 205, 196, 0.2)',
+                            color: 'white'
                         }}
                         whileTap={{
                             scale: 1.01
                         }}
                     >
                         <FontAwesomeIcon icon={faPlus} style={styles.icon} />
-                        <button onClick={news}>Create new</button>
+                        <button style={styles.createnew} onClick={news}>Create new</button>
                     </motion.div>
-                    <motion.div style={styles.row_col}
+                    <motion.div
+                        style={styles.row_col}
                         whileHover={{
                             scale: 1.04,
-                            color: 'black',
-                            backgroundColor: 'rgb(173, 167, 167)'
+                            background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
+                            boxShadow: '0 10px 20px rgba(78, 205, 196, 0.2)',
                         }}
                         whileTap={{
-                            scale: 1.01
+                            scale: 0.98,
                         }}
                     >
                         <FontAwesomeIcon onClick={() => { cols('col') }} className="col" icon={faTableCellsRowLock} style={select === 'col' ? styles.selectedicons : styles.iconsss} />
@@ -74,7 +76,7 @@ function Dashboard() {
 
 const styles = {
     maindiv: {
-        backgroundColor: 'black',
+        backgroundColor: 'rgb(19, 19, 19)',
         padding: "90px",
         fontFamily: "Arial, sans-serif",
         minHeight: '90vh',
@@ -89,15 +91,18 @@ const styles = {
         color: 'rgb(173, 167, 167)',
     },
     mainTitle: {
-        color: '#c49a00',
+        background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)', // Gradient background
+        WebkitBackgroundClip: 'text', // Background clip for text
+        WebkitTextFillColor: 'transparent', // Make text transparent to show the gradient
+        display: 'inline-block',
         fontSize: "65px",
-        fontWeight: '500'
+        fontWeight: '700'
     },
     main: {
         fontSize: '38px',
         marginTop: '15px',
         marginBottom: '15px',
-        color: 'rgb(173, 167, 167)',
+        color: 'rgb(168, 171, 171)',
         marginLeft: '8px'
     },
     mains: {
@@ -116,22 +121,34 @@ const styles = {
         display: 'flex',
         gap: "15px",
         marginLeft: '35px',
-        borderRadius: '15px',
-        border: '2px solid rgb(173, 167, 167)',
-        padding: '3px 10px'
+        borderRadius: '30px',
+        border: '1px solid rgba(78, 205, 196, 0.3)',
+        padding: '15px 18px',
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+        boxShadow: '0 0 10px rgba(78, 205, 196, 0.3)',
     },
     icon: {
         marginTop: '5px'
     },
     row_col: {
         display: 'flex',
-        gap: "15px",
+        gap: '15px',
         marginRight: '50px',
-        border: '2px solid rgb(173, 167, 167)',
-        padding: '3px 20px',
-        borderRadius: '15px',
+        border: '1px solid rgba(78, 205, 196, 0.3)',
+        padding: '10px 20px',
+        borderRadius: '50px',
         position: 'relative',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        background: 'rgba(255, 255, 255, 0.05)',
+        transition: 'all 0.3s ease',
+        boxShadow: '0 0 10px rgba(78, 205, 196, 0.3)',
+    },
+    row_colHover: {
+        background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
+        color: 'white',
+        transform: 'translateY(-3px)',
+        boxShadow: '0 10px 20px rgba(78, 205, 196, 0.2)',
     },
     iconsss: {
         marginTop: '5px',
@@ -144,20 +161,18 @@ const styles = {
         color: 'white',
     },
     cursor: {
-        height: '30px',
-        width: '30px',
-        backgroundColor: "#c49a00",
-        borderRadius: '50px',
+        transition: "all 0.2s ease",
+        height: '60px',
+        width: '60px',
+        borderRadius: '50%',
         position: 'fixed',
-        // transform: `translate(${position.x}px, ${position.y}px)`
+        border: "2px solid rgba(255, 255, 255, 0.8)",
         pointerEvents: "none",
-        left: -20,
-        top: -20,
-        // transform: "translate(-50%, -50%)", 
-        // transition: "transform 0.1s ease",
+        left: -30,
+        top: -30,
         zIndex: 9999,
-        opacity: '0.5'
-    }
+        mixBlendMode: 'difference'
+    },
 
 }
 

@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faInstagram, faLinkedin, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import '../LandingPage/Body.css'
 
 function Footer() {
     return (
@@ -9,10 +10,18 @@ function Footer() {
             <div style={styles.contactContainer}>
                 <h3 style={styles.heading}>Contact Us</h3>
                 <div >
-                    <a href="https://www.instagram.com/_abhinv04"><FontAwesomeIcon icon={faInstagram} style={styles.icon} /></a>
-                    <a href="https://x.com/abhinab981"><FontAwesomeIcon icon={faX} style={styles.icon} /></a>
-                    <a href="https://www.linkedin.com/in/abhinab-sharma-220918280/"> <FontAwesomeIcon icon={faLinkedin} style={styles.icon} /></a>
-                    <a href="https://github.com/Abhinab04"><FontAwesomeIcon icon={faGithub} style={styles.icon} /></a>
+                    <a className="icon" href="https://www.instagram.com/_abhinv04">
+                        <FontAwesomeIcon icon={faInstagram} />
+                    </a>
+                    <a className="icon" href="https://x.com/abhinab981">
+                        <FontAwesomeIcon icon={faX} />
+                    </a>
+                    <a className="icon" href="https://www.linkedin.com/in/abhinab-sharma-220918280/">
+                        <FontAwesomeIcon icon={faLinkedin} />
+                    </a>
+                    <a className="icon" href="https://github.com/Abhinab04">
+                        <FontAwesomeIcon icon={faGithub} />
+                    </a>
                 </div>
             </div>
             <div style={styles.quoteContainer}>
@@ -29,7 +38,7 @@ function Footer() {
 
 const styles = {
     footer: {
-        backgroundColor: "black",
+        backgroundColor: 'rgb(19, 19, 19)',
         color: "rgb(173, 167, 167)",
         padding: "40px 20px",
         textAlign: "center",
@@ -41,7 +50,10 @@ const styles = {
     heading: {
         fontSize: "38px",
         marginTop: "110px",
-        color: "#c49a00",
+        background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)', // Gradient background
+        WebkitBackgroundClip: 'text', // Background clip for text
+        WebkitTextFillColor: 'transparent', // Make text transparent to show the gradient
+        display: 'inline-block'
     },
     quoteContainer: {
         margin: "30px 30px",
@@ -59,11 +71,12 @@ const styles = {
         fontSize: "14px",
         color: "rgb(120, 120, 120)",
     },
-    icon: {
-        fontSize: "32px",
-        color: 'rgb(120, 120, 120)',
-        margin: '10px'
-    }
+    // icon: {
+    //     fontSize: "32px",
+    //     color: 'rgb(120, 120, 120)',
+    //     margin: '10px'
+    // transition: 'box-shadow 0.3s ease, transform 0.3s ease',
+    //  }
 };
 
 export default Footer;

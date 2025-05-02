@@ -1,118 +1,128 @@
-
 import React from "react";
-import { motion } from "framer-motion";
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react'
+import { color, motion } from "framer-motion";
 import { useState } from "react";
-import { windowlistner } from "../LandingPage/WindowListener";
-import '../Header/header.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGithub, faInstagram, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import { faX } from "@fortawesome/free-solid-svg-icons";
+import { windowlistner } from "../WindowListener/WindowListener"
+import "../Register/Register.css"
+import axios from 'axios'
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
-
-const backgroundAnimation = {
-    backgroundPosition: ["0% 70%", "100% 50%", "0% 70%"],
-    transition: { duration: 15, ease: "easeIn", repeat: Infinity, zIndex: -1 }
-};
-
-function timingout() {
-    setTimeout(() => {
-        setErrors('')
-    }, 4000);
-}
 function Login() {
+    const navigate = useNavigate();
     const [position, setposition] = useState({ x: 0, y: 0 });
 
     const [email, setemail] = useState('')
-    const [password, setpassword] = useState('');
-    const [error, seterror] = useState('');
+    const [password, setpassword] = useState('')
+    const [confirm, setconfirm] = useState('')
 
+    const [errors, seterror] = useState('');
 
     const submit = async (e) => {
         e.preventDefault();
-        console.log(email, password)
-        setemail('')
-        setpassword('')
+        console.log(email, password);
+
+        setemail('');
+        setpassword('');
+        setconfirm('');
 
         try {
-            const res = await axios.post('http://localhost:3001/user/Login', { email, password })
-            console.log("data tarnsfer sucessfully " + res.data.success)
+            const res = await axios.post('http://localhost:3000/user/login', { email, password }, { withCredentials: true });
+            console.log("Data transfer successful: ", res.data.sucess, res.data.message);
 
-            if (res.data.success === 'true') {
-                navigate('/Dashboard')
+            if (res.data.sucess === true && res.data.message === 'new Admin Created') {
+                console.log("Navigate to Dashboard");
+                navigate('/admin');
             }
-            if (res.data.success === 'false') {
-                navigate('/user/Login');
-                seterror('User not Registered')
+            else if (res.data.sucess === true && res.data.message === 'new student Created') {
+                console.log("Navigate to Dashboard");
+                navigate('/student');
+            }
+            else if (res.data.sucess === false) {
+                console.log(res.data.error?.[0]?.msg || "Unknown error");
+                seterror(res.data.error?.[0]?.msg || "Something went wrong");
             }
         } catch (error) {
-            console.log(error)
+            console.log("Request failed:", error);
+            seterror("Server error, please try again later.");
         }
-    }
+    };
 
-    const navigate = useNavigate();
-    const register = () => {
-        navigate('/user/Register')
-    }
 
     windowlistner('pointermove', (e) => {
         setposition({ x: e.clientX, y: e.clientY })
     })
+
+    const account = () => {
+        navigate('/user/signup')
+    }
+
+
+    function timingout() {
+        setTimeout(() => {
+            seterror('')
+        }, 5000);
+    }
     return (
-        <motion.div style={styles.login} animate={backgroundAnimation}>
+        <motion.div style={styles.login}>
             <div className="cursor" style={{
                 ...styles.cursor,
                 transform: `translate(${position.x}px, ${position.y}px)`
             }}></div>
-            <motion.form style={styles.innerLogin} method="post">
-                <motion.div >
-                    <p style={styles.heading}>Login</p>
-                    <p style={styles.subheading}>Hi!! Welcome back</p>
+
+            <motion.div style={styles.innerLogin}>
+                <motion.div>
+
+                    <h1 style={styles.artist}>LET'S MAKE YOUR TEXTS SPEAK AGAIN!</h1>
+                    <p style={styles.stories}>STEP INTO A WORLD WHERE YOUR WORDS SPEAK FOR YOU. EVERY LISTEN UNLOCKS NEW POTENTIAL. THIS IS MORE THAN TECHNOLOGY — IT’S YOUR POWER IN ACTION.</p>
                 </motion.div>
-                <motion.div style={styles.inputContainer}>
-                    <motion.div style={styles.emailContainer}>
-                        <label htmlFor="Username" style={styles.label}>Email</label>
-                        <input style={styles.input} onChange={(e) => { setemail(e.target.value) }} value={email} type="email" id="email" name="email" placeholder="Enter your Email"></input>
+                <motion.div style={styles.centerss}>
+                    <motion.div >
+                        <p style={styles.heading}>LOGIN</p>
+                        <p style={styles.subheading}>Continue your journey and pick up right where you left off.</p>
                     </motion.div>
-                    <br></br>
-                    <motion.div style={styles.emailContainer}>
-                        <label htmlFor="password" style={styles.label} >Password</label>
-                        <input style={styles.input} type="password" id="password" name="password" value={password} placeholder="Enter your Password" onChange={(e) => { setpassword(e.target.value) }}></input>
-                    </motion.div>
-                    <br></br>
-                    <motion.a href='#forget-password' style={styles.link}>Forgot Password</motion.a>
-                    <motion.button style={styles.button}
-                        whileHover={{
-                            scale: 1.04,
-                            color: 'black',
-                            backgroundColor: 'rgb(173, 167, 167)'
-                        }}
-                        whileTap={{
-                            scale: 1.01,
-                        }}
-                        onClick={submit}>Login</motion.button>
-                    <motion.div className="Account" style={styles.accountText} >
-                        No account yet?{" "}
-                        <motion.a title="No account" style={styles.links} onClick={register} >
-                            Create your account now
-                        </motion.a>
-                    </motion.div>
-                    <motion.div style={styles.icons}>
-                        <motion.div>
-                            <a href="https://www.instagram.com/_abhinv04"><FontAwesomeIcon icon={faInstagram} style={styles.icon} className="iconsss" /></a>
-                            <a href="https://x.com/abhinab981"><FontAwesomeIcon icon={faX} style={styles.icon} className="iconsss" /></a>
-                            <a href="https://www.linkedin.com/in/abhinab-sharma-220918280/"> <FontAwesomeIcon icon={faLinkedin} style={styles.icon} className="iconsss" /></a>
-                            <a href="https://github.com/Abhinab04"><FontAwesomeIcon icon={faGithub} style={styles.icon} className="iconsss" /></a>
+                    <motion.div>
+                        <motion.div style={styles.emailContainer}>
+                            <label htmlFor="email" style={styles.label}>Email :</label>
+                            <input style={styles.input} type="email" id="email" name="email" value={email} placeholder="example@gmail.com" onChange={(event) => { setemail(event.target.value) }} required></input>
+                        </motion.div>
+                        <motion.div style={styles.emailContainer}>
+                            <label htmlFor="password" style={styles.labelss}>Password :</label>
+                            <input style={styles.input} type="password" id="password" name="password" value={password} onChange={(event) => { setpassword(event.target.value) }}></input>
+                        </motion.div>
+                        <motion.div style={styles.emailContainer}>
+                            <label htmlFor="confirm_password" style={styles.labels}>Confirm_Password :</label>
+                            <input style={styles.input} type="password" id="confirm_password" value={confirm} name="confirm_password" onChange={(event) => setconfirm(event.target.value)}></input>
+                        </motion.div>
+                        <motion.button style={styles.button}
+                            initial={{
+                                scale: 1,
+                                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                color: 'white',
+                            }}
+                            whileHover={{
+                                scale: 1.04,
+                                color: 'white',
+                                background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
+                            }}
+                            whileTap={{
+                                scale: 1.01,
+                            }}
+                            type="submit" onClick={submit}>LOGIN</motion.button>
+                        <motion.div className="Account" style={styles.accountText} >
+                            No account yet?{" "}
+                            <motion.a title="No account" style={styles.links} onClick={account}>
+                                Create your account now
+                            </motion.a>
                         </motion.div>
                     </motion.div>
                 </motion.div>
-            </motion.form>
+            </motion.div>
             <motion.div>
-                {error && (
-                    <p className="error" style={styles.error} {...timingout()} > {error} </p>
+                {errors && (
+                    <p className="error" style={{
+                        ...styles.error,
+                        marginTop: errors ? "40px" : "40px",
+
+                    }} {...timingout()} > {errors} </p>
                 )}
             </motion.div>
         </motion.div>
@@ -121,54 +131,69 @@ function Login() {
 
 const styles = {
     login: {
-        backgroundColor: 'black',
-        color: 'rgb(173, 167, 167)',
+        backgroundColor: 'rgb(19, 19, 19)',
+        color: 'rgb(221, 219, 219)',
         minHeight: '100vh',
-        fontFamily: 'Arial, sans-serif',
+        fontFamily: "'Poppins', sans-serif",
         textAlign: 'center',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: "linear-gradient(45deg,#000000, #1f1e1e,#242323, #000000)",
-        backgroundSize: "400% 200%",
-    },
+        position: 'relative',
+        overflow: 'hidden'
 
+    },
     innerLogin: {
-        backgroundColor: '#1e1d1d',
-        height: '520px',
-        width: '30%',
+        height: '100%',
+        width: '70%',
         padding: '30px',
-        borderRadius: '15px',
-        boxShadow: '4px 4px 10px rgba(181, 174, 174, 0.4)',
-        border: '1px solid white'
     },
     heading: {
-        color: '#c49a00',
-        fontSize: '40px',
-        fontWeight: 'bold',
-        marginBottom: '10px',
-        textShadow: "1px 1px 0px #e74c3c, 2px 2px 0px #e74c3c"
+        color: 'white',
+        fontSize: '42px',
+        fontWeight: '900',
+        marginBottom: '15px',
+        marginTop: "10%",
+        background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent'
     },
     subheading: {
-        fontSize: '28px',
-        marginBottom: '20px',
+        fontSize: '18px',
+        marginBottom: '5%',
+        color: '#e0dfdd'
+
     },
     inputGroup: {
         marginBottom: '20px',
     },
     label: {
         display: 'block',
-        marginRight: '350px',
-        fontSize: '16px',
+        marginRight: '530px',
+        fontSize: '20px',
+        marginBottom: "10px",
+
+    },
+    labelss: {
+        display: 'block',
+        marginRight: '490px',
+        fontSize: '20px',
+        marginBottom: "10px"
+    },
+    labels: {
+        display: 'block',
+        marginRight: '410px',
+        fontSize: '20px',
+        marginBottom: "10px"
     },
     input: {
-        width: '100%',
-        padding: '10px',
-        borderRadius: '5px',
-        border: '1px solid rgb(173, 167, 167)',
-        backgroundColor: '#2d2b2b',
+        border: 'none',
+        width: '50%',
+        padding: '15px',
+        backgroundColor: 'rgb(19, 19, 19)',
         color: 'white',
-        border: 'none'
+        marginBottom: '30px',
+        borderBottom: "2px solid rgb(173, 167, 167)",
     },
     link: {
         color: 'rgb(173, 167, 167)',
@@ -177,37 +202,42 @@ const styles = {
     },
     accountText: {
         marginTop: '20px',
+        fontSize: '16px',
     },
     button: {
-        border: '2px solid rgb(173, 167, 167)',
-        borderRadius: '10px',
-        padding: '5px 15px',
-        width: '100%',
-        marginTop: '20px'
+        border: 'none',
+        borderRadius: '30px',
+        padding: '15px',
+        width: '60%',
+        marginTop: '20px',
+        backgroundColor: 'rgba(255, 255, 255, 0.05)',
+        fontSize: "18px",
+        color: 'white',
+        fontWeight: "900",
+        cursor: 'pointer',
+        transition: 'transform 0.3s ease'
     },
     links: {
         borderBottom: '2px solid rgb(173, 167, 167)',
 
     },
     cursor: {
-        height: '30px',
-        width: '30px',
-        backgroundColor: "#c49a00",
-        borderRadius: '50px',
+        transition: "all 0.2s ease",
+        height: '60px',
+        width: '60px',
+        borderRadius: '50%',
         position: 'fixed',
-        // transform: `translate(${position.x}px, ${position.y}px)`
+        border: "2px solid rgba(255, 255, 255, 0.8)",
         pointerEvents: "none",
-        left: -20,
-        top: -20,
-        // transform: "translate(-50%, -50%)", 
-        // transition: "transform 0.1s ease",
+        left: -30,
+        top: -30,
         zIndex: 9999,
-        opacity: '0.5'
+        mixBlendMode: 'difference'
     },
     error: {
         position: 'absolute',
-        top: '20px',
-        right: '20px',
+        top: '410px',
+        left: '39%',
         backgroundColor: 'rgba(255, 0, 0, 0.8)',
         color: 'white',
         padding: '13px 35px',
@@ -215,8 +245,24 @@ const styles = {
         fontSize: '16px',
         fontWeight: 'bold',
         textAlign: 'center',
-        boxShadow: '0px 0px 10px rgba(255, 0, 0, 0.5)'
-    }
+    },
+    artist: {
+        fontSize: '45px',
+        fontWeight: "900",
+        fontFamily: "'Michroma', sans-serif",
+        background: "linear-gradient(45deg, #FF6B6B, #4ECDC4)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        marginBottom: '20px'
+    },
+    stories: {
+        fontSize: "16px",
+        fontFamily: "Verdana, Geneva, Tahoma, sans-serif",
+        color: "#e0dfdd"
+    },
+    centerss: {
+        // display:'flex',
+        textAlign: 'center'
+    },
 }
-
-export default Login;
+export default Login

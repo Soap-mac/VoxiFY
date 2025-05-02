@@ -278,7 +278,7 @@ function Body() {
 
 const styles = {
     maindiv: {
-        backgroundColor: 'black',
+        backgroundColor: 'rgb(19, 19, 19)',
         textAlign: "center",
         padding: "20px",
         fontFamily: "Arial, sans-serif",
@@ -289,20 +289,23 @@ const styles = {
         marginBottom: "30px",
         fontSize: "65px",
         fontWeight: " bolder",
-        color: 'rgb(173, 167, 167)'
+        color: 'rgb(221, 219, 219)',
     },
     p: {
         fontSize: "25px",
         fontWeight: "100",
-        color: 'rgb(95, 90, 90)'
+        color: 'rgb(169, 167, 167)'
     },
     color: {
-        color: "#c49a00",
+        background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)', // Gradient background
+        WebkitBackgroundClip: 'text', // Background clip for text
+        WebkitTextFillColor: 'transparent', // Make text transparent to show the gradient
+        display: 'inline-block'
     },
     heading: {
         fontSize: "38px",
         marginTop: "125px",
-        color: "rgb(173, 167, 167)",
+       color: 'rgb(221, 219, 219)',
         cursor: 'pointer'
     },
     upload: {
@@ -323,19 +326,21 @@ const styles = {
         fontSize: "30px",
         fontWeight: "100",
         marginTop: "12px",
-        color: "#c49a00",
+        background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)', // Gradient background
+        WebkitBackgroundClip: 'text', // Background clip for text
+        WebkitTextFillColor: 'transparent', // Make text transparent to show the gradient
         marginLeft: "150px"
     },
     icon: {
         fontSize: "35px",
         marginLeft: '150px',
-        color: 'rgb(173, 167, 167)',
+       color: 'rgb(221, 219, 219)',
     },
     summaryText: {
         fontSize: "18px",
         lineHeight: "1.5",
         marginBottom: "5px",
-        color: "#6e6969",
+        color: "rgb(169, 167, 167)",
         marginLeft: '150px',
         lineBreak: 'strict',
 
@@ -353,14 +358,17 @@ const styles = {
     },
     privacy: {
         marginTop: '20px',
-        boxShadow: '0px 4px 10px rgba(0,0,0, 0.3)',
     },
     priv: {
-        color: '#c49a00',
-        fontSize: '38px',
+        background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)', // Gradient background
+        WebkitBackgroundClip: 'text', // Background clip for text
+        WebkitTextFillColor: 'transparent', 
+        display:'inline-block',
+        fontSize: '40px',
+        fontWeight:'bold'
     },
     privdetail: {
-        color: '#6e6969',
+        color: 'rgb(169, 167, 167)',
         fontSize: "20px",
         lineHeight: "1.8",
         marginTop: '40px',
@@ -378,7 +386,7 @@ const styles = {
         marginBottom: '0',
     },
     ideas: {
-        color: 'rgb(173, 167, 167)',
+        color: 'rgb(221, 219, 219)', 
         fontSize: '35px',
         marginTop: '150px'
     },
@@ -390,11 +398,14 @@ const styles = {
         marginTop: '80px',
     },
     bo: {
-        color: '#c49a00',
+       background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)', // Gradient background
+        WebkitBackgroundClip: 'text', // Background clip for text
+        WebkitTextFillColor: 'transparent',
+        display:'block',
         fontSize: '28px'
     },
     inputtext: {
-        color: '#6e6969',
+        color: 'rgb(169, 167, 167)',
         fontSize: "22px",
         lineHeight: "2",
         marginTop: "30px",
@@ -402,31 +413,29 @@ const styles = {
         marginRight: "80px"
     },
     quote: {
-        color: 'rgb(173, 167, 167)',
+        color: 'rgb(221, 219, 219)',
         fontSize: '22px',
         fontStyle: 'italic',
         fontFamily: 'cursive',
         marginTop: '30px'
     },
     iconss: {
-        color: 'rgb(173, 167, 167)',
+        color: 'rgb(221, 219, 219)',
         fontSize: '43px',
         marginBottom: '25px'
     },
     cursor: {
-        height: '30px',
-        width: '30px',
-        backgroundColor: "#c49a00",
-        borderRadius: '50px',
+        transition: "all 0.2s ease",
+        height: '60px',
+        width: '60px',
+        borderRadius: '50%',
         position: 'fixed',
-        // transform: `translate(${position.x}px, ${position.y}px)`
+        border: "2px solid rgba(255, 255, 255, 0.8)",
         pointerEvents: "none",
-        left: -20,
-        top: -20,
-        // transform: "translate(-50%, -50%)", 
-        // transition: "transform 0.1s ease",
+        left: -30,
+        top: -30,
         zIndex: 9999,
-        opacity: '0.5'
+        mixBlendMode: 'difference'
     }
 }
 

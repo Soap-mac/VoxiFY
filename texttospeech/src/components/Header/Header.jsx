@@ -31,13 +31,16 @@ const styles = {
         marginLeft: '200px',
         fontSize: '25px',
         cursor: 'pointer',
+        background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)', // Gradient background
+        WebkitBackgroundClip: 'text', // Background clip for text
+        WebkitTextFillColor: 'transparent',
+        fontWeight:'900',
     },
     header: {
         textAlign: 'center',
-        backgroundColor: 'black',
+        backgroundColor: 'rgb(19, 19, 19)',
         color: 'white',
         padding: '10px',
-        boxShadow: '0px 4px 10px rgba(0,0,0, 0.3)',
         position: 'sticky',
         top: 0,
         zIndex: 999,

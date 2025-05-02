@@ -80,10 +80,9 @@ const styles = {
     },
     header: {
         textAlign: 'center',
-        backgroundColor: 'black',
+        backgroundColor: 'rgb(19, 19, 19)',
         color: 'white',
         padding: '10px',
-        boxShadow: '0px 4px 10px rgba(0,0,0, 0.3)',
         position: 'sticky',
         top: 0,
         zIndex: 999,

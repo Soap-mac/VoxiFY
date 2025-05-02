@@ -1,15 +1,12 @@
 import React from "react";
-import { motion } from "framer-motion";
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react'
+import { color, motion } from "framer-motion";
 import { useState } from "react";
-import { windowlistner } from "../LandingPage/WindowListener";
+import { windowlistner } from "../WindowListener/WindowListener"
+import "../Register/Register.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGithub, faInstagram, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import { faX } from "@fortawesome/free-solid-svg-icons";
-import '../Header/header.css'
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
+import axios from 'axios'
 
 function Register() {
 
@@ -17,35 +14,37 @@ function Register() {
     const navigate = useNavigate();
 
     const [name, setname] = useState('')
-    const [username, setusername] = useState('')
     const [email, setemail] = useState('')
     const [password, setpassword] = useState('')
     const [confirm, setconfirm] = useState('')
+    const [role, setrole] = useState('')
 
     const [errors, setErrors] = useState('');
 
     const submits = async (event) => {
         event.preventDefault();
         setname('')
-        setusername('')
         setemail('')
         setpassword('')
         setconfirm('')
+        setrole('')
 
         try {
-            const response = await axios.post('http://localhost:3001/user/Register', { name, username, email, password, confirm })
+            const response = await axios.post('http://localhost:3001/user/signup', { name, email, password, confirm, role })
             console.log(response.data)
-            if (response.data.success === 'true') {
+            if (response.data.sucess === true) {
                 navigate('/user/Login')
+                console.log("navigate karna h")
             }
-            if (response.data.success === 'false') {
+            if (response.data.sucess === false) {
                 navigate('/user/Register')
                 setErrors(response.data.error[0].msg)
             }
-            console.log(name, username, email, password, confirm)
+            console.log(name, email, password, confirm, role)
         } catch (error) {
             console.log(error)
         }
+        console.log("hwllo world")
     }
 
     windowlistner('pointermove', (e) => {
@@ -53,13 +52,13 @@ function Register() {
     })
 
     const login = () => {
-        navigate('/user/Login')
+        navigate('/user/login')
     }
 
     function timingout() {
         setTimeout(() => {
             setErrors('')
-        }, 4000);
+        }, 5000);
     }
     return (
         <motion.div style={styles.login}>
@@ -69,62 +68,68 @@ function Register() {
             }}></div>
 
             <motion.div style={styles.innerLogin}>
-                <motion.div >
-                    <p style={styles.heading}>Register</p>
-                    <p style={styles.subheading}>Join us today and unlock endless possibilities!</p>
-                </motion.div>
                 <motion.div>
-                    <motion.div style={styles.emailContainer}>
-                        <label htmlFor="name" style={styles.label}>Name</label>
-                        <input style={styles.input} type="name" id="name" name="name" value={name} onChange={(event) => { setname(event.target.value) }} placeholder="Enter your Name" required></input>
-                    </motion.div>
-                    <motion.div style={styles.emailContainer}>
-                        <label htmlFor="username" style={styles.label}>Username</label>
-                        <input style={styles.input} type="username" id="username" name="username" value={username} onChange={(event) => { setusername(event.target.value) }} placeholder="Enter your Username" required></input>
-                    </motion.div>
-                    <motion.div style={styles.emailContainer}>
-                        <label htmlFor="email" style={styles.label}>Email</label>
-                        <input style={styles.input} type="email" id="email" name="email" value={email} placeholder="Enter your Email" onChange={(event) => { setemail(event.target.value) }} required></input>
-                    </motion.div>
-                    <motion.div style={styles.emailContainer}>
-                        <label htmlFor="password" style={styles.label}>Password</label>
-                        <input style={styles.input} type="password" id="password" name="password" value={password} onChange={(event) => { setpassword(event.target.value) }} placeholder="Enter your Password"></input>
-                    </motion.div>
-                    <motion.div style={styles.emailContainer}>
-                        <label htmlFor="confirm_password" style={styles.labels}>Confirm_Password</label>
-                        <input style={styles.input} type="password" id="confirm_password" value={confirm} name="confirm_password" onChange={(event) => setconfirm(event.target.value)} placeholder="Enter your Confirm_Password"></input>
-                    </motion.div>
-                    <motion.button style={styles.button}
-                        whileHover={{
-                            scale: 1.04,
-                            color: 'black',
-                            backgroundColor: 'rgb(173, 167, 167)'
-                        }}
-                        whileTap={{
-                            scale: 1.01,
-                        }}
-                        type="submit"
-                        onClick={submits}>Register</motion.button>
-                    <motion.div className="Account" style={styles.accountText} >
-                        Already have account?{" "}
-                        <motion.a title="No account" onClick={login} style={styles.links}>
-                            Login!
-                        </motion.a>
-                    </motion.div>
-                    <motion.div style={styles.icons}>
+
+                    <h1 style={styles.artist}>Move. Groove. Listen to Your Text!</h1>
+                    <p style={styles.stories}><span style={{ fontWeight: 'bold', color: 'rgb(222, 218, 219)', fontFamily: "sans-serif" }}>GIVE YOUR WORDS A VOICE.</span>™ New to our platform? Sign up now and enjoy a free voice pack plus your first custom reading — on us! Turn your text into powerful speech and start your listening adventure today!</p>
+                </motion.div>
+                <motion.div style={styles.centerss}>
+                    <motion.div >
+                        <p style={styles.heading}>SIGN UP</p>
+                        <p style={{
+                            ...styles.subheading,
+                            marginBottom: errors ? "70px" : "30px",
+                        }}>Join today and let your words speak!</p>
                         <motion.div>
-                            <a href="https://www.instagram.com/_abhinv04"><FontAwesomeIcon icon={faInstagram} style={styles.icon} className="iconsss" /></a>
-                            <a href="https://x.com/abhinab981"><FontAwesomeIcon icon={faX} style={styles.icon} className="iconsss" /></a>
-                            <a href="https://www.linkedin.com/in/abhinab-sharma-220918280/"> <FontAwesomeIcon icon={faLinkedin} style={styles.icon} className="iconsss" /></a>
-                            <a href="https://github.com/Abhinab04"><FontAwesomeIcon icon={faGithub} style={styles.icon} className="iconsss" /></a>
+                            {errors && (
+                                <p className="error" style={{
+                                    ...styles.error,
+                                    marginTop: errors ? "40px" : "20px",
+
+                                }} {...timingout()} > {errors} </p>
+                            )}
+                        </motion.div>
+                    </motion.div>
+                    <motion.div>
+                        <motion.div style={styles.emailContainer}>
+                            <label htmlFor="name" style={styles.label}>Name :</label>
+                            <input style={styles.input} type="name" id="name" name="name" value={name} onChange={(event) => { setname(event.target.value) }} required></input>
+                        </motion.div>
+                        <motion.div style={styles.emailContainer}>
+                            <label htmlFor="email" style={styles.label}>Email :</label>
+                            <input style={styles.input} type="email" id="email" name="email" value={email} placeholder="example@gmail.com" onChange={(event) => { setemail(event.target.value) }} required></input>
+                        </motion.div>
+                        <motion.div style={styles.emailContainer}>
+                            <label htmlFor="password" style={styles.labelss}>Password :</label>
+                            <input style={styles.input} type="password" id="password" name="password" value={password} onChange={(event) => { setpassword(event.target.value) }}></input>
+                        </motion.div>
+                        <motion.div style={styles.emailContainer}>
+                            <label htmlFor="confirm_password" style={styles.labels}>Confirm_Password :</label>
+                            <input style={styles.input} type="password" id="confirm_password" value={confirm} name="confirm_password" onChange={(event) => setconfirm(event.target.value)}></input>
+                        </motion.div>
+                        <motion.button style={styles.button}
+                            initial={{
+                                scale: 1,
+                                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                color: 'white',
+                            }}
+                            whileHover={{
+                                scale: 1.04,
+                                color: 'white',
+                                background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
+                            }}
+                            whileTap={{
+                                scale: 1.01,
+                            }}
+                            type="submit" onClick={submits}>SIGN UP</motion.button>
+                        <motion.div className="Account" style={styles.accountText} >
+                            Already have account?{" "}
+                            <motion.a title="No account" style={styles.links} onClick={login}>
+                                Login!
+                            </motion.a>
                         </motion.div>
                     </motion.div>
                 </motion.div>
-            </motion.div>
-            <motion.div>
-                {errors && (
-                    <p className="error" style={styles.error} {...timingout()} > {errors} </p>
-                )}
             </motion.div>
         </motion.div>
     )
@@ -132,56 +137,79 @@ function Register() {
 
 const styles = {
     login: {
-        backgroundColor: 'black',
-        color: 'rgb(173, 167, 167)',
+        backgroundColor: 'rgb(19, 19, 19)',
+        color: 'rgb(221, 219, 219)',
         minHeight: '100vh',
-        fontFamily: 'Arial, sans-serif',
+        fontFamily: "'Poppins', sans-serif",
         textAlign: 'center',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden'
 
     },
     innerLogin: {
-        backgroundColor: 'rgb(42, 42, 42)',
-        height: '670px',
-        width: '35%',
+        height: '100%',
+        width: '70%',
         padding: '30px',
-        borderRadius: '18px',
-        boxShadow: '4px 4px 10px rgba(181, 174, 174, 0.4)',
-
     },
+    
     heading: {
-        color: '#c49a00',
-        fontSize: '38px',
-        fontWeight: 'bold',
-        marginBottom: '5px',
+        color: 'white',
+        fontSize: '42px',
+        fontWeight: '900',
+        marginBottom: '15px',
+        marginTop: "10%",
+        background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent'
+
     },
     subheading: {
         fontSize: '18px',
-        marginBottom: '20px',
+        marginBottom: '5%',
+
     },
     inputGroup: {
         marginBottom: '20px',
     },
     label: {
         display: 'block',
-        marginRight: '430px',
-        fontSize: '16px',
+        marginRight: '520px',
+        fontSize: '20px',
+        marginBottom: "10px",
+
+    },
+    labelss: {
+        display: 'block',
+        marginRight: '480px',
+        fontSize: '20px',
+        marginBottom: "10px"
     },
     labels: {
         display: 'block',
-        marginRight: '350px',
-        fontSize: '16px',
+        marginRight: '400px',
+        fontSize: '20px',
+        marginBottom: "10px"
     },
     input: {
-        width: '100%',
-        padding: '10px',
-        borderRadius: '5px',
-        border: '1px solid rgb(173, 167, 167)',
-        backgroundColor: 'rgb(30, 30, 30)',
+        border: 'none',
+        width: '50%',
+        padding: '15px',
+        backgroundColor: 'rgb(19, 19, 19)',
         color: 'white',
-        marginBottom: '8px'
+        marginBottom: '30px',
+        borderBottom: "2px solid rgb(173, 167, 167)",
+    },
+    inputss: {
+        border: 'none',
+        width: '50%',
+        padding: '15px',
+        backgroundColor: 'rgb(31, 22, 35)',
+        color: 'white',
+        marginBottom: '30px',
+        borderBottom: "2px solid rgb(173, 167, 167)",
     },
     link: {
         color: 'rgb(173, 167, 167)',
@@ -190,37 +218,43 @@ const styles = {
     },
     accountText: {
         marginTop: '20px',
+        fontSize: '16px',
     },
     button: {
-        border: '2px solid rgb(173, 167, 167)',
-        borderRadius: '10px',
-        padding: '5px 15px',
-        width: '100%',
-        marginTop: '20px'
+        border: 'none',
+        borderRadius: '30px',
+        padding: '15px',
+        width: '60%',
+        marginTop: '20px',
+        backgroundColor: 'rgba(255, 255, 255, 0.05)',
+        fontSize: "18px",
+        color: 'white',
+        fontWeight: "900",
+        cursor: 'pointer',
+        transition: 'transform 0.3s ease'
+
     },
     links: {
         borderBottom: '2px solid rgb(173, 167, 167)',
 
     },
     cursor: {
-        height: '30px',
-        width: '30px',
-        backgroundColor: "#c49a00",
-        borderRadius: '50px',
+        transition: "all 0.2s ease",
+        height: '60px',
+        width: '60px',
+        borderRadius: '50%',
         position: 'fixed',
-        // transform: `translate(${position.x}px, ${position.y}px)`
+        border: "2px solid rgba(255, 255, 255, 0.8)",
         pointerEvents: "none",
-        left: -20,
-        top: -20,
-        // transform: "translate(-50%, -50%)", 
-        // transition: "transform 0.1s ease",
+        left: -30,
+        top: -30,
         zIndex: 9999,
-        opacity: '0.5'
+        mixBlendMode: 'difference'
     },
     error: {
         position: 'absolute',
-        top: '20px',
-        right: '20px',
+        top: '350px',
+        left: '43%',
         backgroundColor: 'rgba(255, 0, 0, 0.8)',
         color: 'white',
         padding: '13px 35px',
@@ -228,7 +262,24 @@ const styles = {
         fontSize: '16px',
         fontWeight: 'bold',
         textAlign: 'center',
-        boxShadow: '0px 0px 10px rgba(255, 0, 0, 0.5)'
-    }
+    },
+    artist: {
+        fontSize: '45px',
+        fontWeight: "900",
+        fontFamily: "'Michroma', sans-serif",
+        background: "linear-gradient(45deg, #FF6B6B, #4ECDC4)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        marginBottom: '20px'
+    },
+    stories: {
+        fontSize: "18px",
+        fontFamily: "Verdana, Geneva, Tahoma, sans-serif",
+        color: "#e0dfdd"
+    },
+    centerss: {
+        // display:'flex',
+        textAlign: 'center'
+    },
 }
 export default Register
