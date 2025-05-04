@@ -21,6 +21,7 @@ function InnerDashboard() {
     const [displayName, setDisplayName] = useState('');
     const [messages, setMessages] = useState([]);
     const [inputText, setInputText] = useState('');
+    const [mascot, setmascot] = useState(true);
     const chatEndRef = useRef(null);
 
     useEffect(() => {
@@ -93,6 +94,8 @@ function InnerDashboard() {
             return;
         }
 
+
+        //pdf transfer and audio recieve----------------------
         const formdata = new FormData;
 
         formdata.append('pdf', file)
@@ -116,19 +119,19 @@ function InnerDashboard() {
         console.log(value2)
     }
 
+    //chat with gpt 4o model------------------------------------------
     const sendMessage = async () => {
         if (!inputText.trim()) return;
 
         const userMessage = { sender: 'user', text: inputText };
         setMessages(prev => [...prev, userMessage]);
         setInputText('');
+        setmascot(false);
 
         try {
-            const response = await axios.post('http://localhost:3001/chat', {
-                prompt: inputText
-            });
+            const response = await axios.get('http://localhost:3001/chat')
 
-            const botReply = { sender: 'bot', text: response.data.reply };
+            const botReply = { sender: 'bot', text: response.data.message };
             setMessages(prev => [...prev, botReply]);
 
         } catch (error) {
@@ -138,6 +141,25 @@ function InnerDashboard() {
         }
     };
 
+
+    const summary = async () => {
+        const userMessage = { sender: 'user', text: "Give summary of the content" };
+        setMessages(prev => [...prev, userMessage]);
+        setInputText('');
+        setmascot(false);
+
+        try {
+            const response = await axios.get('http://localhost:3001/chat/summary')
+
+            const botReply = { sender: 'bot', text: response.data.message };
+            setMessages(prev => [...prev, botReply]);
+
+        } catch (error) {
+            console.error('Chat error:', error);
+            const errorMsg = { sender: 'bot', text: 'Error: Unable to get response.' };
+            setMessages(prev => [...prev, errorMsg]);
+        }
+    }
 
     return (
         <div style={styles.Inner}>
@@ -201,6 +223,8 @@ function InnerDashboard() {
                     </div>
                 </div>
 
+
+
                 {/* Chat Section */}
                 <div className="chat" style={{
                     ...styles.chat,
@@ -209,8 +233,13 @@ function InnerDashboard() {
                     <div style={styles.chatHeader}>
                         <p style={styles.title}>Chat</p>
                     </div>
+                    {mascot &&
+                        (
+                            <h1 className="mascot" style={{ ...styles.mascot }}>Summarize, Speak, and Chat Intelligently.</h1>
+                        )
+                    }
                     <div style={styles.uploadsources}>
-                    <h1>Summarize </h1>
+
                         <div className="chatting" style={styles.chatting}>
                             {messages.map((msg, index) => (
                                 <div key={index} style={{
@@ -232,8 +261,9 @@ function InnerDashboard() {
                                 onChange={e => setInputText(e.target.value)}
                                 onKeyDown={e => {
                                     if (e.key === 'Enter' && !e.shiftKey) {
-                                        e.preventDefault;
+                                        e.preventDefault();
                                         sendMessage();
+                                        setmascot(false);
                                     }
                                 }}
                                 placeholder="Type your message..."
@@ -242,6 +272,11 @@ function InnerDashboard() {
                             <motion.button
                                 onClick={sendMessage} style={styles.sendbtn} >
                                 <FontAwesomeIcon style={styles.arrowup} icon={faArrowUp} />
+                            </motion.button>
+                            <motion.button
+                                onClick={summary}
+                            >
+                                <FontAwesomeIcon className="summary" style={styles.summary} icon={faList} />
                             </motion.button>
                         </div>
                     </div>
@@ -696,14 +731,17 @@ const styles = {
     msg: {
         color: 'white',
         padding: '10px',
-        borderRadius: '8px',
+        borderRadius: '10px',
         display: 'inline-block',
         maxWidth: '80%',
         wordBreak: 'break-word',
         whiteSpace: 'pre-wrap',
         overflowWrap: 'break-word',
         overflow: 'auto',
-
+        backgroundColor: '#242526',
+        border: '1px solid #2f3030',
+        // boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)',
+        textAlign: 'left'
     },
 };
 
