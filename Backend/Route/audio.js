@@ -167,29 +167,50 @@ router.post('/download', upload.single('pdf'), async (req, res) => {
         await generateAudioChunks(text);
 
         await Output(folderpath, outputPath)
-        res.json({ sucess: 'true', message: 'Received and processed successfully' });
-        setTimeout(() => {
-            res.download(path.join(__dirname, '../Output/output.mp3'), (err) => {
+
+
+        if (pdfFile && pdfFile.path) {
+            fs.unlink(pdfFile.path, (err) => {
                 if (err) {
                     console.log(err)
-                    return res.json({ sucess: 'false', message: 'Cannot able to download' })
+                }
+                else {
+                    console.log('file has been deleted')
                 }
             })
-        }, 500);
+        }
+
+        fs.readdir(path.join(__dirname, "../audio"), (err, files) => {
+            if (err) {
+                console.error('Failed to read audio folder:', err);
+                return;
+            }
+            files.forEach(file => {
+                const filePath = path.join(path.join(__dirname, "../audio"), file);
+                fs.unlink(filePath, err => {
+                    if (err) console.error(`Failed to delete ${file}:`, err);
+                    else console.log(`Deleted: ${file}`);
+                });
+            });
+        });
+
+        return res.json({ sucess: 'true', message: 'Received and processed successfully' });
     } catch (error) {
         console.log(error)
     }
 
-    if (pdfFile && pdfFile.path) {
-        fs.unlink(pdfFile.path, (err) => {
-            if (err) {
-                console.log(err)
-            }
-            else {
-                console.log('file has been deleted')
-            }
-        })
-    }
+
+})
+
+router.get('/down', (req, res) => {
+    console.log("coming inside here!!!!!")
+    const outpath = path.join(__dirname, "../Output/output.mp3")
+    res.download(outpath, (err) => {
+        if (err) {
+            console.log(err)
+            return res.json({ sucess: 'false', message: 'Cannot able to download' })
+        }
+    })
 })
 
 

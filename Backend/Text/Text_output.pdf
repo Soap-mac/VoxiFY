@@ -1,269 +1,458 @@
 
 
-Linear Algebra and Its Applications
-Fourth Edition
-Gilbert Strang
-y
-x y z   
-z
-Ax  b
-b
-0
-Ay b
-0Az
-0
+Preface
+Revising this textbook has been a special challenge, for a very nice reason.  So many
+people have read this book, and taught from it, and even loved it. The spirit of the book
+could never change. This text was written to help our teaching of linear algebra keep up
+with the enormous importance of this subject—which just continues to grow.
+One step was certainly possible and desirable—to add new problems. Teaching for all
+these years required hundreds of new exam questions (especially with quizzes going onto
+the web). I think you will approve of the extended choice of problems. The questions are
+still a mixture ofexplain and compute—the two complementary approaches to learning
+this beautiful subject.
+I personally believe that many more people need linear algebra than calculus.  Isaac
+Newton might not agree!  But he isn’t teaching mathematics in the 21st century (and
+maybe he wasn’t a great teacher, but we will give him the benefit of the doubt).  Cer-
+tainly the laws of physics are well expressed by differential equations.  Newton needed
+calculus—quite right.  But the scope of science and engineering and management (and
+life) is now so much wider, and linear algebra has moved into a central place.
+May I say a little more, because many universities have not yet adjusted the balance
+toward linear algebra.  Working with curved lines and curved surfaces, the first step is
+always tolinearize.   Replace the curve by its tangent line,  fit the surface by a plane,
+and the problem becomes linear.  The power of this subject comes when you have ten
+variables, or 1000 variables, instead of two.
+You might think I am exaggerating to use the word “beautiful” for a basic course
+in mathematics.  Not at all.  This subject begins with two vectorsvandw, pointing in
+different directions.  The key step is totake their linear combinations.  We multiply to
+get3vand4w, and we add to get the particular combination3v+4w.  That new vector
+is in thesame planeasvandw.  When we take all combinations, we are filling in the
+whole plane.  If I drawvandwon this page, their combinationscv+dwfill the page
+(and beyond), but theydon’t go upfrom the page.
+In the language of linear equations, I can solvecv+dw=bexactly when the vector
+blies in the same plane asvandw.
+iv
 
-2Chapter 1  Matrices and Gaussian Elimination
-That could seem a little mysterious, unless you already know about 2 by 2 determi-
-nants. They gave the same answery=2, coming from the same ratio of−6to−3.
-If we stay with determinants (which we don’t plan to do), there will be a similar
-formula to compute the other unknown,x:
-x=
-∣
-∣
-∣
-∣
-∣
-3   2
-6   5
-∣
-∣
-∣
-∣
-∣
-∣
-∣
-∣
-∣
-∣
-1   2
-4   5
-∣
-∣
-∣
-∣
-∣
-=
-3·5−2·6
-1·5−2·4
-=
-3
-−3
-=−1.(5)
-Let me compare those two approaches,  looking ahead to real problems whennis
-much larger (n=1000is a very moderate size in scientific computing). The truth is that
-direct use of the determinant formula for 1000 equations would be a total disaster.  It
-would use the million numbers on the left sides correctly, but not efficiently.  We will
-find that formula (Cramer’s Rule) in Chapter 4, but we want a good method to solve
-1000 equations in Chapter 1.
-That good method isGaussian Elimination.  This is the algorithm that is constantly
-used to solve large systems of equations.  From the examples in a textbook (n=3is
-close to the upper limit on the patience of the author and reader) too might not see much
-difference. Equations (2) and (4) used essentially the same steps to findy=2. Certainly
-xcame faster by the back-substitution in equation (3) than the ratio in (5).  For larger
-nthere is absolutely no question.  Elimination wins (and this is even the best way to
-compute determinants).
-The idea of elimination is deceptively simple—you will master it after a few exam-
-ples.  It will become the basis for half of this book, simplifying a matrix so that we can
-understand it.  Together with the mechanics of the algorithm, we want to explain four
-deeper aspects in this chapter. They are:
-1.Linear equations lead togeometry of planes.   It is not easy to visualize a nine-
-dimensional plane in ten-dimensional space. It is harder to see ten of those planes,
-intersecting at the solution to ten equations—but somehow this is almost possible.
-Our  example  has  two  lines  in  Figure  1.1,  meeting  at  the  point(x,y) = (−1,2).
-Linear algebra moves that picture into ten dimensions, where the intuition has to
-imagine the geometry (and gets it right)
-2.We move tomatrix notation, writing thenunknowns as a vectorxand thenequa-
-tions asAx=b.  We multiplyAby “elimination matrices” to reach an upper trian-
-gular matrixU.  Those steps factorAintoLtimesU, whereLis lower triangular.
-I will write downAand its factors for our example, and explain them at the right
-time:
-FactorizationA=
+42Chapter 1  Matrices and Gaussian Elimination
+The remedy is equally clear.Exchange the two equations, moving the entry 3 up
+into the pivot. In this example the matrix would become upper triangular:
+Exchange rows
+3u+4v=b
+2
+2v=b
+1
+To express this in matrix terms, we need thepermutation matrixPthat produces the
+row exchange. It comes from exchanging the rows ofI:
+PermutationP=
 [
-1   2
-4   5
+0   1
+1   0
+]
+andPA=
+[
+0   1
+1   0
+][
+0   2
+3   4
 ]
 =
+[
+3   4
+0   2
+]
+.
+Phas the same effect onb, exchangingb
+1
+andb
+2
+.The new system is PAx=Pb.  The
+unknownsuandvarenotreversed in a row exchange.
+A permutation matrixPhas the same rows as the identity(in some order). There is
+a single “1” in every row and column. The most common permutation matrix isP=I(it
+exchanges nothing). The product of two permutation matrices is another permutation—
+the rows ofIget reordered twice.
+AfterP=I, the simplest permutations exchange two rows.  Other permutations ex-
+change more rows.There aren!= (n)(n−1)···(1)permutations of sizen. Row 1 has
+nchoices, then row 2 hasn−1choices, and finally the last row has only one choice. We
+can display all 3 by 3 permutations (there are3!= (3)(2)(1) =6matrices):
+I=
+
+
+
+1
+1
+1
+
+
+
+P
+21
+=
+
+
+
+1
+1
+1
+
+
+
+P
+32
+P
+21
+=
+
+
+
+1
+1
+1
+
+
+
+P
+31
+=
+
+
+
+1
+1
+1
+
+
+
+P
+32
+=
+
+
+
+1
+1
+1
+
+
+
+P
+21
+P
+32
+=
+
+
+
+1
+1
+1
+
+
+
+.
+There will be 24 permutation matrices of ordern=4.  There are only two permutation
+matrices of order 2, namely
 [
 1   0
-4   1
-][
-12
-0−3
+0   1
 ]
-=LtimesU.(6)
-
-1.1  Introduction3
-y
-x
-b
-x+ 2y= 3
-x=−1
-y= 2
-4x+ 5y= 6
-One solution(x, y) = (−1,2)
-y
-x
-x+ 2y= 3
-4x+ 8y= 6
-Parallel:  No solution
-y
-x
-x+ 2y= 3
-4x+ 8y= 12
-Whole line of solutions
-Figure 1.1:The example has one solution. Singular cases have none or too many.
-First we have to introduce matrices and vectors and the rules for multiplication.
-Every matrix has atransposeA
-T
-. This matrix has aninverseA
-−1
+and
+[
+0   1
+1   0
+]
 .
-3.In  most  cases  elimination  goes  forward  without  difficulties.   The  matrix  has  an
-inverse and the systemAx=bhas one solution.  In exceptional cases the method
-willbreak down—either the equations were written in the wrong order, which is
-easily fixed by exchanging them, or the equations don’t have a unique solution.
-Thatsingular casewill appear if 8 replaces 5 in our example:
-Singular case
-Two parallel lines
-1x+2y=3
-4x+8y=6.
-(7)
-Elimination still innocently subtracts 4 times the first equation from the second. But
-look at the result!
-(equation 2)−4(equation 1)0=−6.
-This singular case hasno solution. Other singular cases haveinfinitely many solu-
-tions.  (Change 6 to 12 in the example, and elimination will lead to0=0.  Nowy
-can haveany value,) When elimination breaks down, we want to find every possible
-solution.
-4.We need a rough count of thenumber of elimination stepsrequired to solve a sys-
-tem of sizen.  The computing cost often determines the accuracy in the model.  A
-hundred equations require a third of a million steps (multiplications and subtrac-
-tions).  The computer can do those quickly,  but not many trillions.  And already
-after a million steps, roundoff error could be significant.  (Some problems are sen-
-sitive; others are not.)  Without trying for full detail, we want to see large systems
-that arise in practice, and how they are actually solved.
-The final result of this chapter will be an elimination algorithm that is about as effi-
-cient as possible.  It is essentially the algorithm that is in constant use in a tremendous
-variety of applications. And at the same time, understanding it in terms ofmatrices—the
-coefficient matrixA, the matricesEfor elimination andPfor row exchanges, and the
-
-4Chapter 1  Matrices and Gaussian Elimination
-final factorsLandU—is an essential foundation for the theory.  I hope you will enjoy
-this book and this course.
-1.2    The Geometry of Linear Equations
-The way to understand this subject is by example. We begin with two extremely humble
-equations,  recognizing  that  you  could  solve  them  without  a  course  in  linear  algebra.
-Nevertheless I hope you will give Gauss a chance:
-2x−y=1
-x+y=5.
-We can look at that systemby rowsorby columns. We want to see them both.
-The  first  approach  concentrates  on  the  separate  equations  (therows).   That  is  the
-most familiar, and in two dimensions we can do it quickly.  The equation2x−y=1is
-represented by astraight linein thex-yplane.  The line goes through the pointsx=1,
-y=1andx=
-1
-2
-,y=0(and also through(2,3)and all intermediate points). The second
-equationx+y=5produces a second line (Figure 1.2a). Its slope isdy/dx=−1and it
-crosses the first line at the solution.
-The point of intersection lies on both lines.  It is the only solution to both equations.
-That pointx=2andy=3will soon be found by “elimination.”
-b
-b
-(0,5)
-(0,−1)
-(
-1
-2
-,0)
-x+y= 5
-2x−y= 1
-x
-y
-(5,0)
-(x, y) = (2,3)
-(a) Lines meet atx= 2,y= 3
-bb
-b
-b
-b
-(−3,3)
-(−1,1)(2,1) = column 1
-(4,2)
-(1,5) =
-2 (column 1)
-+3 (column 2)
-(b) Columns combine with 2 and 3
-Figure 1.2:Row picture (two lines) and column picture (combine columns).
-The second approach looks at thecolumnsof the linear system.  The two separate
-equations are reallyone vector equation:
-Column formx
-[
-2
-1
-]
-+y
-[
+When we know about inverses and transposes (the next section definesA
 −1
-1
-]
+andA
+T
+),
+we discover an important fact:P
+−1
+is always the same asP
+T
+.
+A zero in the pivot location raises two possibilities:The trouble may be easy to fix,
+or it may be serious.  This is decided by lookingbelow the zero.  If there is a nonzero
+entry lower down in the same column, then a row exchange is carried out. The nonzero
+entry becomes the needed pivot, and elimination can get going again:
+A=
+
+
+
+0a   b
+0   0c
+d   e    f
+
+
+
+d=0=⇒no first pivot
+a=0=⇒no second pivot
+c=0=⇒no third pivot.
+
+1.5  Triangular Factors and Row Exchanges43
+Ifd=0, the problem is incurable and this matrix issingular.  There is no hope for a
+unique solution toAx=b.  Ifdisnotzero, an exchangeP
+13
+of rows 1 and 3 will move
+dinto the pivot. However the next pivot position also contains a zero. The numberais
+now below it (theeabove it is useless). Ifais not zero then another row exchangeP
+23
+is
+called for:
+P
+13
 =
-[
-1
-5
-]
-.
+
+
+
+0   0   1
+0   1   0
+1   0   0
+
+
+
+andP
+23
+=
+
+
+
+1   0   0
+0   0   1
+0   1   0
+
+
+
+andP
+23
+P
+13
+A=
+
+
+
+de    f
+0ab
+0   0c
+
+
+
+One more point: The permutationP
+23
+P
+13
+will do both row exchanges at once:
+P
+13
+acts firstP
+23
+P
+13
+=
+
+
+
+1   0   0
+0   0   1
+0   1   0
+
+
+
+
+
+
+0   0   1
+0   1   0
+1   0   0
+
+
+
+=
+
+
+
+0   0   1
+1   0   0
+0   1   0
+
+
+
+=P.
+If we had known, we could have multipliedAbyPin the first place.  With the rows in
+the right orderPA, any nonsingular matrix is ready for elimination.
+Elimination in a Nutshell:PA=LU
+The main point is this: If elimination can be completed with the help of row exchanges,
+then we can imagine that those exchanges are done first (byP).The matrix PA will not
+need row exchanges.  In other words,PAallows the standard factorization intoLtimes
+U. The theory of Gaussian elimination can be summarized in a few lines:
+1JIn thenonsingularcase,  there is a permutation matrixPthat reorders
+the rows ofAto avoid zeros in the pivot positions.  ThenAx=bhas aunique
+solution:
+With the rows reordered in advance,PAcan be factored intoLU.
+In thesingularcase, noPcan produce a full set of pivots: elimination fails.
+In practice, we also consider a row exchange when the original pivot isnearzero—
+even if it is not exactly zero. Choosing a larger pivot reduces the roundoff error.
+You  have to  be  careful  withL.   Suppose  elimination  subtracts  row 1  from  row 2,
+creating`
+21
+=1.  Then suppose it exchanges rows 2 and 3.  If that exchange is done in
+advance, the multiplier will change to`
+31
+=1inPA=LU.
+Example 7.
+A=
+
+
+
+1   1   1
+1   1   3
+2   5   8
+
+
+
+→
+
+
+
+1   1   1
+002
+0   3   6
+
+
+
+→
+
+
+
+1   1   1
+0   3   6
+0   0   2
+
+
+
+=U.(10)
 
-CONTENTSiii
-B   The Jordan Form466
-C   Matrix Factorizations473
-D   Glossary: A Dictionary for Linear Algebra475
-E   MATLAB Teaching Codes484
-F    Linear Algebra in a Nutshell486
+44Chapter 1  Matrices and Gaussian Elimination
+That row exchange recoversLU—but now`
+31
+=1and`
+21
+=2:
+P=
+
+
+
+1   0   0
+0   0   1
+0   1   0
+
+
+
+andL=
+
+
+
+1   0   0
+2   1   0
+1   0   1
+
+
+
+andPA=LU.(11)
+InMATLAB,A([r k] :)exchanges rowkwith rowrbelow it (where thekth pivot has
+been found). We update the matricesLandPthe same way. At the start,P=Iand sign
+= +1:
+A([r k], :) = A([k r], :);
+L([r k], 1:k-1) = L([k r], 1:k-1);
+P([r k], :) = P([k r], :);
+sign = -sign
+The “sign” ofPtells whether the number of row exchanges is even (sign= +1) or odd
+(sign=−1). A row exchange reverses sign. The final value of sign is thedeterminant
+ofPand it does not depend on the order of the row exchanges.
+To summarize: A good elimination code savesLandUandP.  Those matrices carry
+the information that originally came inA—and they carry it in a more usable form.Ax=
+breduces to two triangular systems.  This is the practical equivalent of the calculation
+we do next—to find the inverse matrix A
+−1
+and the solution x=A
+−1
+b.
+Problem Set 1.5
+1.When is an upper triangular matrix nonsingular (a full set of pivots)?
+2.What multiple`
+32
+of row 2 ofAwill elimination subtract from row 3 ofA? Use the
+factored form
+A=
+
+
+
+1   0   0
+2   1   0
+1   4   1
+
+
+
+
+
+
+5   7   8
+0   2   3
+0   0   6
+
+
+
+.
+What will be the pivots? Will a row exchange be required?
+3.Multiply the matrixL=E
+−1
+F
+−1
+G
+−1
+in equation (6) byGF Ein equation (3):
+
+
+
+100
+210
+−1−1   1
+
+
+
+times
+
+
+
+10   0
+−2   1   0
+−1   1   1
+
+
+
+.
+Multiply also in the opposite order.Why are the answers what they are?
+
+viiiPREFACE
+Acknowledgments
+I enjoyed writing this book, and I certainly hope you enjoy reading it. A big part of the
+pleasure comes from working with friends.  I had wonderful help from Brett Coonley
+and Cordula Robinson and Erin Maneri.  They created the L
 A
 T
-~y=
-~
-0
-A~x=
-~
-0
-~
-0
-~
-0
-R
-n
-R
-m
-Row SpaceColumn Space
-allA
-T
-~yallA~x
-Null
-Space
-Left
-Null Space
-A~x=
-~
-b
-A
-T
-~y=~c
-C(A
-T
-)
-dimr
-C(A)
-dimr
-N(A)
-dimn−r
-N(A
-T
-)
-dimm−r
-  
-
-
-
+E
+X files and drew all the
+figures. Without Brett’s steady support I would never have completed this new edition.
+Earlier help with the Teaching Codes came from Steven Lee and Cleve Moler. Those
+follow the steps described in the book;MATLABand Maple and Mathematica are faster
+for  large  matrices.   All  can  be  used  (optionally)  in  this  course.   I  could  have  added
+“Factorization” to that list above, as a fifth avenue to the understanding of matrices:
+[L, U, P] = lu(A)for linear equations
+[Q, R] = qr(A)to make the columns orthogonal
+[S, E] = eig(A)to find eigenvectors and eigenvalues.
+In giving thanks, I never forget the first dedication of this textbook, years ago.  That
+was a special chance to thank my parents for so many unselfish gifts.  Their example is
+an inspiration for my life.
+And I thank the reader too, hoping you like this book.
+Gilbert Strang
