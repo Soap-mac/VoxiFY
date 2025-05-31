@@ -38,14 +38,14 @@ Follow these steps to set up the project locally:
    cd text-to-speech
 2. **Start the Development Server**
      ```bash
-         cd texttospeech
-         npm install
-         npm run dev
+     cd texttospeech
+     npm install
+     npm run dev
 3. **Backend Setup**
     ```bash
-       cd backend
-       npm install
-       node app.js
+    cd backend
+    npm install
+    node app.js
     
 ---
 ## **Authentication**
@@ -105,33 +105,33 @@ Follow these steps to set up the project locally:
 ---
 ## **Folder Structure**
   ```bash
-      text-to-speech/
-      ├── src/
-      │   ├── components/
-      │   │   ├── LandingPage/
-      │   │   │   ├── Body.jsx
-      │   │   │   ├── Body.css
-      │   │   ├── Dashboard/
-      │   │   │   ├── Dashboard.jsx
-      │   │   │   ├── Dashboard.css
-      │   │   ├── InnerDashboard/
-      │   │   │   ├── InnerDashboard.jsx
-      │   │   │   ├── InnerDashboard.css
-      │   │   ├── Auth/
-      │   │   │   ├── Login.jsx
-      │   │   │   ├── Login.css
-      │   │   │   ├── Register.jsx
-      │   │   │   ├── Register.css
-      │   ├── App.js
-      │   ├── index.js
-      ├── public/
-      ├── backend/
-      │   ├── server.js
-      │   ├── routes/
-      │   │   ├── authRoutes.js
-      │   │   ├── textRoutes.js
-      │   ├── models/
-      │   │   ├── User.js
-      │   ├── middleware/
-      │   │   ├── authMiddleware.js
-      ├── package.json
+  text-to-speech/
+  ├── src/
+  │   ├── components/
+  │   │   ├── LandingPage/
+  │   │   │   ├── Body.jsx
+  │   │   │   ├── Body.css
+  │   │   ├── Dashboard/
+  │   │   │   ├── Dashboard.jsx
+  │   │   │   ├── Dashboard.css
+  │   │   ├── InnerDashboard/
+  │   │   │   ├── InnerDashboard.jsx
+  │   │   │   ├── InnerDashboard.css
+  │   │   ├── Auth/
+  │   │   │   ├── Login.jsx
+  │   │   │   ├── Login.css
+  │   │   │   ├── Register.jsx
+  │   │   │   ├── Register.css
+  │   ├── App.js
+  │   ├── index.js
+  ├── public/
+  ├── backend/
+  │   ├── server.js
+  │   ├── routes/
+  │   │   ├── authRoutes.js
+  │   │   ├── textRoutes.js
+  │   ├── models/
+  │   │   ├── User.js
+  │   ├── middleware/
+  │   │   ├── authMiddleware.js
+  ├── package.json
