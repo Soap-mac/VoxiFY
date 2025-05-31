@@ -36,3 +36,102 @@ Follow these steps to set up the project locally:
    ```bash
    git clone https://github.com/Abhinab04/VoiceFY.git
    cd text-to-speech
+2. **Start the Development Server**
+     ```bash
+         cd texttospeech
+         npm install
+         npm run dev
+3. **Backend Setup**
+    ```bash
+       cd backend
+       npm install
+       node app.js
+    
+---
+## **Authentication**
+1. **Register New Account**
+   - Navigate to the Register page
+   - Fill in required details:
+     - Username
+     - Email
+     - Password
+   - Click "Register" to create account
+
+2. **Login**
+   - Visit the Login page
+   - Enter credentials:
+     - Email
+     - Password
+   - Click "Login" to access your account
+## **Source Management**
+ ### Upload Sources
+- Supported formats:
+  - PDF documents
+  - Google Docs
+  - Website URLs
+
+### Automatic Processing
+- AI-powered summarization
+- Content analysis
+- Key points extraction
+  
+## **Text-to-Speech Features**
+1. **Convert Text**
+   - Select text portion
+   - Choose voice settings
+   - Click "Convert to Speech"
+
+2. **Audio Management**
+   - Preview generated audio
+   - Download for offline use
+   - Adjust playback settings
+
+## **Customised Options**
+### Layout Settings
+- Column View
+  - Traditional vertical layout
+  - Optimal for reading
+
+- Row View
+  - Horizontal arrangement
+  - Better for comparisons
+
+### Personal Preferences
+- Font size adjustment
+- Color theme selection
+- Audio playback speed
+- Voice selection
+  
+---
+## **Folder Structure**
+  ```bash
+      text-to-speech/
+      ├── src/
+      │   ├── components/
+      │   │   ├── LandingPage/
+      │   │   │   ├── Body.jsx
+      │   │   │   ├── Body.css
+      │   │   ├── Dashboard/
+      │   │   │   ├── Dashboard.jsx
+      │   │   │   ├── Dashboard.css
+      │   │   ├── InnerDashboard/
+      │   │   │   ├── InnerDashboard.jsx
+      │   │   │   ├── InnerDashboard.css
+      │   │   ├── Auth/
+      │   │   │   ├── Login.jsx
+      │   │   │   ├── Login.css
+      │   │   │   ├── Register.jsx
+      │   │   │   ├── Register.css
+      │   ├── App.js
+      │   ├── index.js
+      ├── public/
+      ├── backend/
+      │   ├── server.js
+      │   ├── routes/
+      │   │   ├── authRoutes.js
+      │   │   ├── textRoutes.js
+      │   ├── models/
+      │   │   ├── User.js
+      │   ├── middleware/
+      │   │   ├── authMiddleware.js
+      ├── package.json
