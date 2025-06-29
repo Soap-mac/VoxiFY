@@ -37,7 +37,7 @@ Follow these steps to set up the project locally:
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/Abhinab04/VoiceFY.git
-   cd text-to-speech
+   
 2. **Start the Development Server**
      ```bash
      cd texttospeech
