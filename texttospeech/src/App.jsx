@@ -10,6 +10,7 @@ import Dashboard from './components/Dashboard/Body/Dashboard'
 import Login from './components/Login/Login'
 import Register from './components/Register/Register'
 import InnerDashboard from './components/InnerDashboard/InnerDashboard'
+import { ExpandableCardDemo } from './components/Flash Card/flashCard'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -23,6 +24,8 @@ function App() {
       {/* <Dashboard /> */}
       {/* <Login /> */}
       {/* <InnerDashboard />  */}
+      
+      <ExpandableCardDemo></ExpandableCardDemo>
     </div>
 
   )

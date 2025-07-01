@@ -36,9 +36,9 @@ function Footer() {
     );
 }
 
-const styles = {
+export const styles = {
     footer: {
-        backgroundColor: 'rgb(19, 19, 19)',
+        backgroundColor: 'rgb(19,19,19)',
         color: "rgb(173, 167, 167)",
         padding: "40px 20px",
         textAlign: "center",
