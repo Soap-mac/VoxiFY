@@ -11,6 +11,8 @@ const pdf = require('pdf-parse')
 const { PDFDocument } = require('pdf-lib');
 const router = express.Router()
 const multer = require('multer');
+const Issue = require("../models/Issues");
+const nodemailer = require('nodemailer');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -141,6 +143,57 @@ router.post('/chatting', (req, res) => {
         return res.json({ sucess: 'true', message: summary })
     })();
 
+})
+
+router.post('/issueHappend', async (req, res) => {
+    const { name, phn, email, issue } = req.body;
+    if (!name || !phn || !email || !issue) {
+        return res.status(500).send({
+            sucess: false,
+            message: "please enter all the required fields"
+        })
+    }
+    const newIssue = await Issue.create({
+        name: name,
+        phone: phn,
+        email: email,
+        issue: issue
+    });
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "123abcdef456789ab0@gmail.com",
+            pass: "qrie dqoa jayr kice"
+        }
+    });
+
+    const mailOptions = {
+        from: "123abcdef456789ab0@gmail.com",
+        to: "osiruss004@gmail.com",
+        subject: "Issue Raised",
+        text: `An issue is raised by ${name} whose Email is ${email} and the issue is ${issue}`
+    }
+
+    transporter.sendMail(mailOptions, function (err, info) {
+        if (err) {
+            console.log(err);
+            return res.json({
+                success: false,
+                message: " Email not sent",
+            })
+        } else {
+            console.log("Email sent" + info);
+            return res.json({
+                success: true,
+                message: "Check your Gmail BOSS you got the issue mail"
+            });
+        }
+    })
+
+    return res.json({
+        success: true,
+        message: "Your Issue has been saved "
+    })
 })
 
 module.exports = router;
